@@ -1,7 +1,6 @@
 import "./globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
-import { ThemeProvider } from "@/components/theme-provider"
-
+import { Toaster } from "@/components/ui/toaster"
 
 export default function RootLayout({
   children,
@@ -11,13 +10,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider
-                  attribute="class"
-                  defaultTheme="system"
-                  enableSystem
-                  disableTransitionOnChange>
         <ConvexClientProvider>{children}</ConvexClientProvider>
-        </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );
