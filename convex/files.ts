@@ -3,19 +3,19 @@ import { mutation, query } from "./_generated/server";
 
 export const createFile = mutation({
     args:{
-        name: v.string()
+        name: v.string(),
+        orgID: v.string(),
     },
     async handler(ctx, args){
 
         const isUserLoggedIn = await ctx.auth.getUserIdentity()
-
         if(!isUserLoggedIn){
             throw new ConvexError('Please login')
         }
 
-
         await ctx.db.insert("files", {
-            name : args.name
+            name : args.name,
+            orgID: args.orgID,
         });
 
     },
@@ -23,7 +23,9 @@ export const createFile = mutation({
 });
 
 export const getFile = query({
-    args:{},
+
+    args:{ownerID: v.string(),},
+
     async handler(ctx ,args){
 
         const isUserLoggedIn = await ctx.auth.getUserIdentity()
@@ -32,7 +34,18 @@ export const getFile = query({
             return [];
         }
 
-        return ctx.db.query("files").collect();
+        if(args.ownerID === 'skip'){
+            throw new ConvexError('ACCESC DENIED')
+        }
+
+
+        const files = await ctx.db
+
+        .query("files")
+        .withIndex('by_owner', q=> q.eq('orgID', args.ownerID.toString() ))
+        .collect()
+
+        return files
 
     },
     

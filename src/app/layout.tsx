@@ -1,6 +1,6 @@
 import "./globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
-import { Toaster } from "@/components/ui/toaster"
+import { Header } from "./header";
 
 export default function RootLayout({
   children,
@@ -10,8 +10,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ConvexClientProvider>{children}</ConvexClientProvider>
-        <Toaster />
+        <ConvexClientProvider>
+        <Header/>
+          {children}
+        </ConvexClientProvider>
       </body>
     </html>
   );

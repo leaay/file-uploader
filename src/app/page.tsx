@@ -1,28 +1,42 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { SignInButton, SignOutButton,SignedIn,SignedOut } from "@clerk/nextjs";
+import { SignInButton, SignOutButton,SignedIn,SignedOut, useOrganization, useUser } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast"
+
 
 export default  function Home() {
 
-  const { toast } = useToast()
+  const org = useOrganization()
+  const {user} = useUser()
   const createFile = useMutation(api.files.createFile)
-  const showFiles = useQuery(api.files.getFile)
   const [input, setInput] = useState('')
 
+  const currentOwner = org.organization?.id ? org.organization.id : user?.id;
+
+  const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip'}) 
+  
   const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
     setInput(e.target.value)
   }
 
   const handleInputSend = ()=>{
 
-    createFile({name:input})
+    if(!user){
+      return
+    }
+
+    if(!org.organization?.id){
+      createFile({name:input, orgID:user.id})
+      setInput('')
+      return
+    }
+
+    createFile({name:input, orgID:org.organization?.id})
     setInput('')
-    toast({description:'item has been created'})
+    
 
   }
 
@@ -37,7 +51,7 @@ export default  function Home() {
           <Input className="w-auto" placeholder="save" type="text" value={input} onChange={handleInputChange} />
           <Button disabled={!input} onClick={handleInputSend}>Add</Button> 
         </div>
-        <div className="grid grid-cols-4 w-3/4 rounded-xl overflow-hidden bg-indigo-800">
+        <div className="grid grid-cols-4 w-3/4 rounded-xl overflow-hidden bg-indigo-200">
           {showFiles?.map((file,index) => (
             <div key={file._id} className={`${index % 2 === 0 ? 'bg-slate-400' : 'bg-gray-300'} p-4 text-black`}>
               {file.name}
