@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default  function Home() {
 
@@ -17,7 +17,7 @@ export default  function Home() {
   const currentOwner = org.organization?.id ? org.organization.id : user?.id;
 
   const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip'}) 
-  
+
   const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
     setInput(e.target.value)
   }
@@ -51,6 +51,16 @@ export default  function Home() {
           <Input className="w-auto" placeholder="save" type="text" value={input} onChange={handleInputChange} />
           <Button disabled={!input} onClick={handleInputSend}>Add</Button> 
         </div>
+
+        {!showFiles && 
+          <div className="flex flex-col gap-4 container items-center ">
+          <Skeleton className="bg-gray-400 h-[40px] w-3/4 rounded-xl"/>
+          <Skeleton className="bg-gray-400 h-[40px] w-3/4 rounded-xl"/>
+          <Skeleton className="bg-gray-400 h-[40px] w-3/4 rounded-xl"/>
+          <Skeleton className="bg-gray-400 h-[40px] w-3/4 rounded-xl"/>
+          </div>   
+        }
+
         <div className="grid grid-cols-4 w-3/4 rounded-xl overflow-hidden bg-indigo-200">
           {showFiles?.map((file,index) => (
             <div key={file._id} className={`${index % 2 === 0 ? 'bg-slate-400' : 'bg-gray-300'} p-4 text-black`}>
@@ -58,6 +68,7 @@ export default  function Home() {
             </div>
           ))}
         </div>
+
       </SignedIn>
     </div>
   );
