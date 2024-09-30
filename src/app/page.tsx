@@ -1,55 +1,118 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { SignInButton, SignOutButton,SignedIn,SignedOut, useOrganization, useUser } from "@clerk/nextjs";
+import { SignInButton,SignedIn,SignedOut, useOrganization, useUser } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
+import {Dialog,DialogContent,DialogDescription,DialogHeader,DialogTitle,DialogTrigger} from "@/components/ui/dialog"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import {Form,FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessage} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 
 export default  function Home() {
 
   const org = useOrganization()
   const {user} = useUser()
   const createFile = useMutation(api.files.createFile)
-  const [input, setInput] = useState('')
-
   const currentOwner = org.organization?.id ? org.organization.id : user?.id;
-
   const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip'}) 
 
-  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
-    setInput(e.target.value)
-  }
 
-  const handleInputSend = ()=>{
 
-    if(!user){
-      return
-    }
+  const formSchema = z.object({
+    fileName: z.string().min(2, {message:'Name has to be atleast 2 letters long.'}).max(200,{message:'Name cannot be longer than 200 signs.'}),
+    // file: z.custom<File>((file)=>{
 
-    if(!org.organization?.id){
-      createFile({name:input, orgID:user.id})
-      setInput('')
-      return
-    }
+    //   if (!(file instanceof File)) {
+    //     return false;
+    //   }
 
-    createFile({name:input, orgID:org.organization?.id})
-    setInput('')
+
+    //   return true
     
+    // },{message:'file must be < 5mb'})
+    file: z.custom<File>((val)=>val instanceof File, 'File is requaried')
+  })
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fileName: "",
+      file: undefined
+    },
+  })
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
   }
-
 
   return (
     <div className="flex flex-col gap-y-10 justify-center p-4 items-center">
       
-        <SignedOut><SignInButton mode="modal"><Button variant={"default"}>Sign In</Button></SignInButton></SignedOut>
-      <SignedIn>
-        <SignOutButton><Button variant={"destructive"}>Sign Out</Button></SignOutButton>
-        <div className="flex flex-col gap-y-5 w-3/4 items-center">
-          <Input className="w-auto" placeholder="save" type="text" value={input} onChange={handleInputChange} />
-          <Button disabled={!input} onClick={handleInputSend}>Add</Button> 
+        <SignedOut>
+          <SignInButton mode="modal"><Button variant={"default"}>Sign In</Button></SignInButton></SignedOut>
+        <SignedIn>
+
+        <div className="container mx-auto flex flex-row justify-between p-12 items-center">
+          <h1 className="text-xl">Your Files</h1>
+
+            <Dialog>
+              <DialogTrigger><Button>Upload File</Button></DialogTrigger>
+
+                <DialogContent>
+
+                  <DialogHeader>
+                    <DialogTitle>Upload something</DialogTitle>
+                    <DialogDescription>
+                      Choose files from your device.
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                        <FormField
+                          control={form.control}
+                          name="fileName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Name your file</FormLabel>
+                              <FormControl>
+                                <Input placeholder="shadcn" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                            
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="file"
+                          render={({ field:{onChange }, ...field }) => (
+                            <FormItem>
+                              <FormLabel>Choose file</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="file"
+                                  onChange={(event)=>{
+                                    if(!event.target.files) return;
+                                    onChange(event.target.files[0])
+                                  }} 
+                                  className="cursor-pointer"  {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                            
+                          )}
+                        />
+                        <Button type="submit">Upload</Button>
+                      </form>
+                  </Form>
+                  
+                </DialogContent>
+            </Dialog>
+          
         </div>
 
         {!showFiles && 
