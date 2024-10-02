@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { SignInButton,SignedIn,SignedOut, useOrganization, useUser } from "@clerk/nextjs";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Skeleton } from "@/components/ui/skeleton"
 import {Dialog,DialogContent,DialogDescription,DialogHeader,DialogTitle,DialogTrigger} from "@/components/ui/dialog"
