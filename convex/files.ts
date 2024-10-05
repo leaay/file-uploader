@@ -5,6 +5,7 @@ export const createFile = mutation({
     args:{
         name: v.string(),
         orgID: v.string(),
+        fileID : v.id("_storage")
     },
     async handler(ctx, args){
 
@@ -16,6 +17,7 @@ export const createFile = mutation({
         await ctx.db.insert("files", {
             name : args.name,
             orgID: args.orgID,
+            fileID: args.fileID
         });
 
     },

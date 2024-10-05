@@ -8,12 +8,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useState } from "react";
+import Spinner from "./spiner";
+import { useToast } from "@/hooks/use-toast"
 
-export default function UploadModal(){
+interface Props {
+  currentOwner?: string;
+}
+
+export default function UploadModal({ currentOwner }: Props){
 
     const generateUploadUrl = useMutation(api.files.generateUploadUrl);
-
-    const [isUploading, setIsUploading] = useState<boolean>(false)
+    const saveFile = useMutation(api.files.createFile);
+    const { toast } = useToast()
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
 
     const formSchema = z.object({
         fileName: z.string().min(2, {message:'Name has to be atleast 2 letters long.'}).max(200,{message:'Name cannot be longer than 200 signs.'}),
@@ -24,13 +31,20 @@ export default function UploadModal(){
         resolver: zodResolver(formSchema),
         defaultValues: {
           fileName: "",
-          file: undefined
+          file: null
         },
       })
     
      async function onSubmit(values: z.infer<typeof formSchema>) {
 
-        setIsUploading(true)
+        if(!currentOwner){
+          toast({
+            variant:'destructive',
+            title:"User is not logged in"
+          })
+          throw new Error('User is not logged in')
+          return 
+        }
 
         const postUrl = await generateUploadUrl();
 
@@ -40,15 +54,24 @@ export default function UploadModal(){
             body: values.file,
         });
 
-        // const { storageId } = await result.json();
-        const data = await result.json();
-        console.log(data)
-        setIsUploading(false)
+        const { storageId } = await result.json();
+
+
+        await saveFile({ fileID:storageId, orgID:currentOwner, name:values.fileName  });
+
+        form.reset()
+
+        setIsDialogOpen(false)
+
+        toast({
+          title: "Uploaded successfully"
+        })
+        
     }
 
 
     return(
-        <Dialog {...(isUploading ? { open: true } : {})}>
+        <Dialog onOpenChange={()=>{form.reset(),setIsDialogOpen(!isDialogOpen)}} open={isDialogOpen} >
               <DialogTrigger><Button>Upload File</Button></DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
@@ -58,7 +81,6 @@ export default function UploadModal(){
                     </DialogDescription>
                   </DialogHeader>
 
-                {isUploading ? <div>uploading...</div> : 
                   <Form {...form}>
                       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <FormField
@@ -93,11 +115,11 @@ export default function UploadModal(){
                             </FormItem>
                           )}
                         />
-                        <Button type="submit">Upload</Button>
+                        <Button disabled={form.formState.isSubmitting}  type="submit">{form.formState.isSubmitting ? <Spinner /> : 'Upload'}</Button>
                       </form>
                   </Form>
-                }
-
+                
+                          
                 </DialogContent>
         </Dialog>
 

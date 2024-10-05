@@ -10,7 +10,6 @@ export default  function Home() {
 
   const org = useOrganization()
   const {user} = useUser()
-  // const createFile = useMutation(api.files.createFile)
   const currentOwner = org.organization?.id ? org.organization.id : user?.id;
   const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip'}) 
 
@@ -23,7 +22,7 @@ export default  function Home() {
 
         <div className="container mx-auto flex flex-row justify-between p-12 items-center">
           <h1 className="text-xl">Your Files</h1>
-          <UploadModal />
+          <UploadModal currentOwner={currentOwner} />
         </div>
 
         {!showFiles && 
