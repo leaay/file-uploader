@@ -1,6 +1,6 @@
 import {Card,CardDescription,CardHeader,CardTitle,} from "@/components/ui/card"
 import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
-import {AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle,AlertDialogTrigger,} from "@/components/ui/alert-dialog"
+import {AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle} from "@/components/ui/alert-dialog"
 import { Doc } from "../../convex/_generated/dataModel";
 import { EllipsisVertical, Trash2 } from "lucide-react";
 import { useState } from "react";
