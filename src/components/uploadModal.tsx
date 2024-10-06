@@ -56,17 +56,22 @@ export default function UploadModal({ currentOwner }: Props){
 
         const { storageId } = await result.json();
 
+        try{
 
-        await saveFile({ fileID:storageId, orgID:currentOwner, name:values.fileName  });
+          await saveFile({ fileID:storageId, orgID:currentOwner, name:values.fileName  });
+          form.reset()
+          setIsDialogOpen(false)
+          toast({
+            title: "Uploaded successfully"
+          })
 
-        form.reset()
+        }catch (err){
+          toast({
+            variant:'destructive',
+            title: "Something went wrong, please try again later."
+          })
+        }
 
-        setIsDialogOpen(false)
-
-        toast({
-          title: "Uploaded successfully"
-        })
-        
     }
 
 

@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { SignInButton,SignedIn,SignedOut, useOrganization, useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { Skeleton } from "@/components/ui/skeleton"
 import UploadModal  from "@/components/uploadModal"
+import { FileCard } from "@/components/fileCard";
 
 export default  function Home() {
 
@@ -27,19 +27,12 @@ export default  function Home() {
 
         {!showFiles && 
           <div className="flex flex-col gap-4 container items-center ">
-          <Skeleton className="bg-gray-400 h-[40px] w-3/4 rounded-xl"/>
-          <Skeleton className="bg-gray-400 h-[40px] w-3/4 rounded-xl"/>
-          <Skeleton className="bg-gray-400 h-[40px] w-3/4 rounded-xl"/>
-          <Skeleton className="bg-gray-400 h-[40px] w-3/4 rounded-xl"/>
+            loading files..
           </div>   
         }
 
-        <div className="grid grid-cols-4 w-3/4 rounded-xl overflow-hidden bg-indigo-200">
-          {showFiles?.map((file,index) => (
-            <div key={file._id} className={`${index % 2 === 0 ? 'bg-slate-400' : 'bg-gray-300'} p-4 text-black`}>
-              {file.name}
-            </div>
-          ))}
+        <div className="grid grid-cols-1 w-3/4 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5">
+          {showFiles?.map((file) => <FileCard key={file._id} file={file} />)}
         </div>
 
       </SignedIn>
