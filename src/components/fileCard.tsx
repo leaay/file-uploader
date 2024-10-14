@@ -4,6 +4,9 @@ import {AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,Alert
 import { Doc } from "../../convex/_generated/dataModel";
 import { EllipsisVertical, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { toast } from "@/hooks/use-toast";
 
 interface prop {
     file: Doc<'files'>
@@ -11,9 +14,11 @@ interface prop {
 
 
 
-function FileCardAction(){
+function FileCardAction({file}:prop){
 
     const  [isAlertOpen , setIsDialogOpen] = useState<boolean>(false)
+    const deleteFile = useMutation(api.files.deleteFile)
+
 
     return(
         <>
@@ -27,7 +32,7 @@ function FileCardAction(){
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
+                    <AlertDialogAction onClick={async()=>{await deleteFile({_id:file._id,fileID:file.fileID});toast({variant:'white',title:'File has been deleted succesfuly!'})}}>Continue</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
@@ -52,7 +57,7 @@ export function FileCard({file}:prop) {
             <CardTitle>{file.name}</CardTitle>
             <CardDescription>created: {file._creationTime}</CardDescription>
         </CardHeader>
-        <div className="absolute top-2 right-2"><FileCardAction/></div>
+        <div className="absolute top-2 right-2"><FileCardAction file={file}/></div>
         
     </Card>
     

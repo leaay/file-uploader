@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useState } from "react";
-import Spinner from "./spiner";
+import Spiner from "./spiner";
 import { useToast } from "@/hooks/use-toast"
 
 interface Props {
@@ -58,7 +58,7 @@ export default function UploadModal({ currentOwner }: Props){
 
         try{
 
-          await saveFile({ fileID:storageId, orgID:currentOwner, name:values.fileName  });
+          await saveFile({ fileID:storageId, ownerID:currentOwner, name:values.fileName  });
           form.reset()
           setIsDialogOpen(false)
           toast({
@@ -120,7 +120,7 @@ export default function UploadModal({ currentOwner }: Props){
                             </FormItem>
                           )}
                         />
-                        <Button disabled={form.formState.isSubmitting}  type="submit">{form.formState.isSubmitting ? <Spinner /> : 'Upload'}</Button>
+                        <Button disabled={form.formState.isSubmitting}  type="submit">{form.formState.isSubmitting ? <Spiner /> : 'Upload'}</Button>
                       </form>
                   </Form>
                 
