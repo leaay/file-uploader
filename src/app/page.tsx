@@ -6,7 +6,6 @@ import { api } from "../../convex/_generated/api";
 import UploadModal  from "@/components/uploadModal"
 import { FileCard } from "@/components/fileCard";
 import Image from 'next/image'
-import Spiner from "@/components/spiner";
 
 export default  function Home() {
 
