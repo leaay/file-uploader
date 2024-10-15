@@ -8,13 +8,16 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "@/hooks/use-toast";
 
-interface prop {
-    file: Doc<'files'>
+interface ExtendedFile extends Doc<'files'> {
+    url: string | null;
+}
+
+interface ExtendedProp {
+    file: ExtendedFile
 }
 
 
-
-function FileCardAction({file}:prop){
+function FileCardAction({file}:ExtendedProp){
 
     const  [isAlertOpen , setIsDialogOpen] = useState<boolean>(false)
     const deleteFile = useMutation(api.files.deleteFile)
@@ -48,17 +51,20 @@ function FileCardAction({file}:prop){
 }
 
 
-export function FileCard({file}:prop) {
+export function FileCard({file}:ExtendedProp) {
+
+    const added = new Date(file._creationTime)
+
 
   return (
 
-    <Card className="relative">
+    <Card  style={{ zIndex: 0 }} className="relative z">
         <CardHeader>
             <CardTitle>{file.name}</CardTitle>
-            <CardDescription>created: {file._creationTime}</CardDescription>
+            <CardDescription>Added: {added.toDateString()}</CardDescription>
+            <p>{file.url}</p>
         </CardHeader>
         <div className="absolute top-2 right-2"><FileCardAction file={file}/></div>
-        
     </Card>
     
   )

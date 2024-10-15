@@ -4,7 +4,7 @@ import { Folders } from "lucide-react";
 
 export  function Header(){
     return (
-        <div className="border-b-2 p-4 bg-white ">
+        <div className="border-b-2 p-4 bg-white sticky top-0 z-22 ">
             <div className="container mx-auto flex justify-between items-center">
                 <div className="font-medium text-xl  md:text-2xl flex items-center gap-x-2"><Folders className="w-8 h-8" />Uploaderv1</div>
                 <div className="flex gap-x-2 md:gap-x-12">

@@ -1,11 +1,13 @@
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { fileTypes } from "./schema";
 
 export const createFile = mutation({
     args:{
         name: v.string(),
         ownerID: v.string(),
-        fileID : v.id("_storage")
+        fileID : v.id("_storage"),
+        fileType: fileTypes,
     },
     async handler(ctx, args){
 
@@ -14,10 +16,13 @@ export const createFile = mutation({
             throw new ConvexError('Please login')
         }
 
+        const test = await ctx.storage.getUrl(args.fileID)
+
         await ctx.db.insert("files", {
             name : args.name,
             ownerID: args.ownerID,
-            fileID: args.fileID
+            fileID: args.fileID,
+            fileType:args.fileType
         });
 
     },
@@ -47,7 +52,14 @@ export const getFile = query({
         .withIndex('by_owner', q=> q.eq('ownerID', args.ownerID.toString() ))
         .collect()
 
-        return files
+        const filesWithUrl = await Promise.all(
+            files.map(async (file) =>({
+                ...file,
+                url:await ctx.storage.getUrl(file.fileID) 
+            }))
+        )
+
+        return filesWithUrl
 
     },
     

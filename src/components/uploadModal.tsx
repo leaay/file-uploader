@@ -11,9 +11,12 @@ import { useState } from "react";
 import Spiner from "./spiner";
 import { useToast } from "@/hooks/use-toast"
 
+
 interface Props {
   currentOwner?: string;
 }
+
+type FileType = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
 
 export default function UploadModal({ currentOwner }: Props){
 
@@ -22,16 +25,30 @@ export default function UploadModal({ currentOwner }: Props){
     const { toast } = useToast()
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
 
+    const acceptedFileTypes: string[] = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/svg+xml",
+      "application/pdf",
+    ];
+   
+
     const formSchema = z.object({
         fileName: z.string().min(2, {message:'Name has to be atleast 2 letters long.'}).max(200,{message:'Name cannot be longer than 200 signs.'}),
-        file: z.custom<File | null>((val)=>val instanceof File, 'File is requaried')
+        file: z.custom<File | null>((val)=>{
+          if(val instanceof File){
+            return acceptedFileTypes.includes(val.type)
+          }
+          return false
+        }, 'File is required and must be of type JPEG, PNG, GIF, SVG, or PDF.')
       })
     
       const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
           fileName: "",
-          file: null
+          file: null,
         },
       })
     
@@ -47,7 +64,7 @@ export default function UploadModal({ currentOwner }: Props){
         }
 
         const postUrl = await generateUploadUrl();
-
+        
         const result = await fetch(postUrl, {
             method: "POST",
             headers: { "Content-Type": values.file!.type },
@@ -56,9 +73,19 @@ export default function UploadModal({ currentOwner }: Props){
 
         const { storageId } = await result.json();
 
-        try{
+        if(values.file?.type === undefined){
+          return
+        }
 
-          await saveFile({ fileID:storageId, ownerID:currentOwner, name:values.fileName  });
+
+        try{
+          await saveFile({ 
+            fileID:storageId, 
+            ownerID:currentOwner, 
+            name:values.fileName , 
+            fileType:values.file.type as FileType
+          });
+          
           form.reset()
           setIsDialogOpen(false)
           toast({
