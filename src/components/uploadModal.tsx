@@ -16,7 +16,7 @@ interface Props {
   currentOwner?: string;
 }
 
-type FileType = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
+export type FileType = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
 
 export default function UploadModal({ currentOwner }: Props){
 
@@ -64,7 +64,6 @@ export default function UploadModal({ currentOwner }: Props){
         }
 
         const postUrl = await generateUploadUrl();
-        
         const result = await fetch(postUrl, {
             method: "POST",
             headers: { "Content-Type": values.file!.type },

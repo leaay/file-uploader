@@ -8,7 +8,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "@/hooks/use-toast";
 import Image from "next/image";
-import { FileType } from "./uploadModal";
+
 
 
 interface ExtendedFile extends Doc<'files'> {
@@ -19,6 +19,7 @@ interface ExtendedProp {
     file: ExtendedFile
 }
 
+type FileType = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
 
 function FileCardAction({file}:ExtendedProp){
 
