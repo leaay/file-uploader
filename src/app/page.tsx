@@ -14,7 +14,7 @@ export default  function Home() {
   const currentOwner = org.organization?.id ? org.organization.id : user?.id;
   const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip'}) 
   const isLoading = showFiles === undefined
-  console.log(showFiles)
+ 
 
   return (
     <div className={`p-6 sm:p-8 md:p-12 gap-6 sm:gap-8 md:gap-12 flex-1 flex ${showFiles?.length === 0 || isLoading ? 'justify-center' : ''} items-center flex-col`}>

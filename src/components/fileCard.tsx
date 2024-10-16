@@ -2,11 +2,14 @@ import {Card,CardDescription,CardHeader,CardTitle,} from "@/components/ui/card"
 import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import {AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle} from "@/components/ui/alert-dialog"
 import { Doc } from "../../convex/_generated/dataModel";
-import { EllipsisVertical, Trash2 } from "lucide-react";
+import { EllipsisVertical, FileDown, Loader2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "@/hooks/use-toast";
+import Image from "next/image";
+import { FileType } from "./uploadModal";
+import { getFile } from "../../convex/files";
 
 interface ExtendedFile extends Doc<'files'> {
     url: string | null;
@@ -21,6 +24,43 @@ function FileCardAction({file}:ExtendedProp){
 
     const  [isAlertOpen , setIsDialogOpen] = useState<boolean>(false)
     const deleteFile = useMutation(api.files.deleteFile)
+    const [fileIsDownloading,setFileIsDownloading] = useState<boolean>(false)
+
+    async function downloadFile(url: string, filename: string) {
+        try {
+            setFileIsDownloading(true)
+            toast({
+                duration: 1000,
+                variant: 'white',
+                description: (
+                  <div className="flex items-center gap-2 font-bold">
+                    <Loader2 className="animate-spin h-8 w-8 text-purple-500" />
+                    <span>Downloading your file...</span>
+                  </div>
+                ),
+            })
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename || "download";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+          } catch (error) {
+            
+            toast({duration:1000,variant:'destructive',title:'Something went wrong'})
+            setFileIsDownloading(false)
+            return
+
+          }
+
+          setFileIsDownloading(false)
+          return
+
+      }
 
 
     return(
@@ -40,9 +80,10 @@ function FileCardAction({file}:ExtendedProp){
             </AlertDialogContent>
         </AlertDialog>
 
-        <DropdownMenu>
+        <DropdownMenu >
             <DropdownMenuTrigger><EllipsisVertical /></DropdownMenuTrigger>
             <DropdownMenuContent>
+                <DropdownMenuItem onClick={()=>downloadFile(file.url as string , file.name)} className="flex flex-row gap-x-2 font-bold "><FileDown />Download</DropdownMenuItem>
                 <DropdownMenuItem onClick={()=>setIsDialogOpen(true)} className="flex flex-row gap-x-2 font-bold text-red-600"><Trash2 />Delete</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
@@ -55,14 +96,26 @@ export function FileCard({file}:ExtendedProp) {
 
     const added = new Date(file._creationTime)
 
+    function isImage(fileType:string) {
+
+        const imageTypes: FileType[] = ["image/jpeg", "image/png", "image/gif", "image/svg+xml"];
+        return imageTypes.includes(fileType as FileType)
+
+    }
+
 
   return (
 
     <Card  style={{ zIndex: 0 }} className="relative z">
         <CardHeader>
-            <CardTitle>{file.name}</CardTitle>
+            <CardTitle className="truncate max-w-full group-hover:overflow-visible group-hover:whitespace-normal">{file.name}</CardTitle>
             <CardDescription>Added: {added.toDateString()}</CardDescription>
-            <p>{file.url}</p>
+            {   
+                isImage(file.fileType) ? 
+                <Image className="p-2 aspect-[1/1.1]" src={file.url as string} width={200} height={200} alt="image preview" /> :
+                <Image className="p-2 aspect-[1/1.1]" src="/pdf-placeholder.png" width={200} height={200} alt="file preview" />
+            }
+            
         </CardHeader>
         <div className="absolute top-2 right-2"><FileCardAction file={file}/></div>
     </Card>
