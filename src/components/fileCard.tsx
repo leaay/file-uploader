@@ -9,7 +9,7 @@ import { api } from "../../convex/_generated/api";
 import { toast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { FileType } from "./uploadModal";
-import { getFile } from "../../convex/files";
+
 
 interface ExtendedFile extends Doc<'files'> {
     url: string | null;
@@ -24,11 +24,10 @@ function FileCardAction({file}:ExtendedProp){
 
     const  [isAlertOpen , setIsDialogOpen] = useState<boolean>(false)
     const deleteFile = useMutation(api.files.deleteFile)
-    const [fileIsDownloading,setFileIsDownloading] = useState<boolean>(false)
+    
 
     async function downloadFile(url: string, filename: string) {
         try {
-            setFileIsDownloading(true)
             toast({
                 duration: 1000,
                 variant: 'white',
@@ -52,12 +51,11 @@ function FileCardAction({file}:ExtendedProp){
           } catch (error) {
             
             toast({duration:1000,variant:'destructive',title:'Something went wrong'})
-            setFileIsDownloading(false)
+
             return
 
           }
 
-          setFileIsDownloading(false)
           return
 
       }
