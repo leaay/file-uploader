@@ -105,14 +105,14 @@ export function FileCard({file}:ExtendedProp) {
 
   return (
 
-    <Card  style={{ zIndex: 0 }} className="relative z">
-        <CardHeader>
-            <CardTitle className="truncate max-w-full group-hover:overflow-visible group-hover:whitespace-normal">{file.name}</CardTitle>
-            <CardDescription>Added: {added.toDateString()}</CardDescription>
+    <Card  style={{ zIndex: 0  }} className="group relative z max-h-52 overflow-hidden gap-1 outline-2 outline outline-slate-400 hover:outline-purple-500 ">
+        <CardHeader className=" gap-1  " >
+            <CardTitle className=" truncate max-w-full   bg-slate-400 px-4 py-2 pr-8 group-hover:bg-purple-500">{file.name}</CardTitle>
+            <CardDescription className="px-4" > {added.toDateString()}</CardDescription>
             {   
                 isImage(file.fileType) ? 
-                <Image className="p-2 aspect-[1/1.1]" src={file.url as string} width={200} height={200} alt="image preview" /> :
-                <Image className="p-2 aspect-[1/1.1]" src="/pdf-placeholder.png" width={200} height={200} alt="file preview" />
+                <Image className="p-2 aspect-[1/1.1] w-full z-[-29]" src={file.url as string} width={400} height={400} alt="image preview" /> :
+                <Image className="p-2 aspect-[1/1.1] w-full z-[-29]" src="/pdf-placeholder.png" width={400} height={400} alt="file preview" />
             }
             
         </CardHeader>

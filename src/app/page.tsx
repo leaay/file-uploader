@@ -14,7 +14,6 @@ export default  function Home() {
   const currentOwner = org.organization?.id ? org.organization.id : user?.id;
   const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip'}) 
   const isLoading = showFiles === undefined
- 
 
   return (
     <div className={`p-6 sm:p-8 md:p-12 gap-6 sm:gap-8 md:gap-12 flex-1 flex ${showFiles?.length === 0 || isLoading ? 'justify-center' : ''} items-center flex-col`}>
@@ -29,14 +28,14 @@ export default  function Home() {
               <h1 className="text-xl">Your Files</h1>
               <UploadModal currentOwner={currentOwner} />
             </div>
-            <div className="grid grid-cols-1 w-3/4 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 w-3/4 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-8 p-4 ">
                   {showFiles?.map((file) => <FileCard key={file._id} file={file} /> )}
             </div>
           </>
         }
 
         {showFiles?.length === 0 && 
-          <div className="flex flex-col justify-center  ">
+          <div className="flex flex-col justify-center p-20 ">
             <Image src="/empty.svg" width={700}height={700}alt="Picture of the author"/>
             <div className="flex flex-col md:flex-row items-start p-8 justify-between gap-y-6 ">
               <h1 className="text-4xl">Upload something!</h1> 
