@@ -105,9 +105,9 @@ export function FileCard({file}:ExtendedProp) {
 
   return (
 
-    <Card  style={{ zIndex: 0  }} className="group relative z max-h-52 overflow-hidden gap-1 outline-2 outline outline-slate-400 hover:outline-purple-500 ">
+    <Card  style={{ zIndex: 0  }} className="group relative z max-h-52 overflow-hidden gap-1 outline-2 outline outline-blue-100 hover:outline-sky-200 ">
         <CardHeader className=" gap-1  " >
-            <CardTitle className=" truncate max-w-full   bg-slate-400 px-4 py-2 pr-8 group-hover:bg-purple-500">{file.name}</CardTitle>
+            <CardTitle className=" truncate max-w-full   bg-blue-100 px-4 py-2 pr-8 group-hover:bg-sky-200">{file.name}</CardTitle>
             <CardDescription className="px-4" > {added.toDateString()}</CardDescription>
             {   
                 isImage(file.fileType) ? 

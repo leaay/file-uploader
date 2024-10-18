@@ -31,7 +31,10 @@ export const createFile = mutation({
 
 export const getFile = query({
 
-    args:{ownerID: v.string(),},
+    args:{
+        ownerID: v.string(),
+        query: v.optional(v.string())
+    },
 
     async handler(ctx ,args){
 
@@ -44,13 +47,19 @@ export const getFile = query({
         if(args.ownerID === 'skip'){
             throw new ConvexError('ACCESC DENIED')
         }
+        
+        console.log(args.query?.toLocaleLowerCase())
 
-
-        const files = await ctx.db
-
+        const baseQuery = ctx.db
         .query("files")
-        .withIndex('by_owner', q=> q.eq('ownerID', args.ownerID.toString() ))
-        .collect()
+        .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()));
+        
+        const filteredFiles = ctx.db
+        .query("files")
+        .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()))
+        .filter((q)=>q.eq(q.field('name'), args.query !== undefined && args.query!.toLocaleLowerCase()))
+
+        const files = args.query === undefined ? await baseQuery.collect() : await filteredFiles.collect() ;
 
         const filesWithUrl = await Promise.all(
             files.map(async (file) =>({
