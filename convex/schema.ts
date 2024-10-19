@@ -9,5 +9,7 @@ export default defineSchema({
      ownerID : v.string(),
      fileID: v.id("_storage"),
      fileType: fileTypes
-    }).index("by_owner",["ownerID"],),
+    })
+    .index("by_owner",["ownerID"],)
+    .searchIndex("queryName",{searchField:'name'}),
 });

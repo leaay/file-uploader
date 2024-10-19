@@ -53,22 +53,25 @@ export const getFile = query({
         const baseQuery = ctx.db
         .query("files")
         .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()));
-        
-        const filteredFiles = ctx.db
-        .query("files")
-        .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()))
-        .filter((q)=>q.eq(q.field('name'), args.query !== undefined && args.query!.toLocaleLowerCase()))
 
-        const files = args.query === undefined ? await baseQuery.collect() : await filteredFiles.collect() ;
+        
+        // const filteredFiles = ctx.db
+        // .query("files")
+        // .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()))
+        // .filter((q)=>q.eq(q.field('name'), args.query !== undefined && args.query!))
+        // const files = args.query === undefined ? await baseQuery.collect() : await filteredFiles.collect();
+
+        const files =  await baseQuery.collect()
 
         const filesWithUrl = await Promise.all(
             files.map(async (file) =>({
                 ...file,
                 url:await ctx.storage.getUrl(file.fileID) 
             }))
+            
         )
 
-        return filesWithUrl
+        return args.query !== undefined ? filesWithUrl.filter((file) => file.name.toLocaleLowerCase().includes(args.query!.toLocaleLowerCase())) : filesWithUrl
 
     },
     
