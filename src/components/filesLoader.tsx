@@ -11,6 +11,7 @@ import { useState } from "react";
 
 interface prop{
     title: string;
+    fav?: boolean;
 }
 
 export default  function FilesLoader({title}:prop) {

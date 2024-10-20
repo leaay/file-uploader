@@ -1,8 +1,8 @@
 import {Card,CardDescription,CardHeader,CardTitle,} from "@/components/ui/card"
-import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
+import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import {AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle} from "@/components/ui/alert-dialog"
 import { Doc } from "../../convex/_generated/dataModel";
-import { EllipsisVertical, FileDown, Loader2, Trash2 } from "lucide-react";
+import { EllipsisVertical, FileDown, Loader2, Star, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
@@ -25,7 +25,7 @@ function FileCardAction({file}:ExtendedProp){
 
     const  [isAlertOpen , setIsDialogOpen] = useState<boolean>(false)
     const deleteFile = useMutation(api.files.deleteFile)
-    
+    const toggleFavorite = useMutation(api.files.favouriteToggle)
 
     async function downloadFile(url: string, filename: string) {
         try {
@@ -82,7 +82,9 @@ function FileCardAction({file}:ExtendedProp){
         <DropdownMenu >
             <DropdownMenuTrigger><EllipsisVertical /></DropdownMenuTrigger>
             <DropdownMenuContent>
+                <DropdownMenuItem onClick={()=>toggleFavorite({_id:file._id, isFavorite:file.isFavourite})} className="flex flex-row gap-x-2 font-bold "><Star  className={`${file.isFavourite && 'fill-current'}`} />Favourite</DropdownMenuItem>
                 <DropdownMenuItem onClick={()=>downloadFile(file.url as string , file.name)} className="flex flex-row gap-x-2 font-bold "><FileDown />Download</DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={()=>setIsDialogOpen(true)} className="flex flex-row gap-x-2 font-bold text-red-600"><Trash2 />Delete</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
@@ -101,6 +103,7 @@ export function FileCard({file}:ExtendedProp) {
         return imageTypes.includes(fileType as FileType)
 
     }
+
 
 
   return (

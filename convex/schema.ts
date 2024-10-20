@@ -8,7 +8,8 @@ export default defineSchema({
      name: v.string(),
      ownerID : v.string(),
      fileID: v.id("_storage"),
-     fileType: fileTypes
+     fileType: fileTypes,
+     isFavourite : v.boolean()
     })
     .index("by_owner",["ownerID"],)
     .searchIndex("queryName",{searchField:'name'}),

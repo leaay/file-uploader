@@ -22,7 +22,8 @@ export const createFile = mutation({
             name : args.name,
             ownerID: args.ownerID,
             fileID: args.fileID,
-            fileType:args.fileType
+            fileType:args.fileType,
+            isFavourite:false
         });
 
     },
@@ -80,6 +81,19 @@ export const getFile = query({
 export const generateUploadUrl = mutation(async (ctx) => {
     return await ctx.storage.generateUploadUrl();
 });
+
+export const favouriteToggle = mutation({
+    args: {
+        _id:v.id('files'),
+        isFavorite: v.boolean()
+    },
+    async handler(ctx , args){
+
+        await ctx.db.patch(args._id,{isFavourite: !args.isFavorite});
+
+    }
+});
+
 
 export const deleteFile = mutation({
     args:{
