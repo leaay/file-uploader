@@ -8,6 +8,6 @@ export default  function Page() {
 
 
   return (
-    <FilesLoader title={'Favourites'} />
+    <FilesLoader title={'Favourites'} fav={true} />
   );
 }

@@ -34,7 +34,8 @@ export const getFile = query({
 
     args:{
         ownerID: v.string(),
-        query: v.optional(v.string())
+        query: v.optional(v.string()),
+        fav: v.optional(v.boolean())
     },
 
     async handler(ctx ,args){
@@ -51,16 +52,16 @@ export const getFile = query({
         
         console.log(args.query?.toLocaleLowerCase())
 
-        const baseQuery = ctx.db
-        .query("files")
-        .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()));
+        const baseQuery = args.fav
+                ? ctx.db
+                    .query("files")
+                    .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()))
+                    .filter((q) => q.eq(q.field('isFavourite'), args.fav))
+                : ctx.db
+                    .query("files")
+                    .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()));
 
-        
-        // const filteredFiles = ctx.db
-        // .query("files")
-        // .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()))
-        // .filter((q)=>q.eq(q.field('name'), args.query !== undefined && args.query!))
-        // const files = args.query === undefined ? await baseQuery.collect() : await filteredFiles.collect();
+
 
         const files =  await baseQuery.collect()
 
