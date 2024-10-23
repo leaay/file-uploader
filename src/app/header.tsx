@@ -1,7 +1,7 @@
 'use client'
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
-import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
+import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import { FileStack, Menu, Star } from "lucide-react";
 import useMedia from "@/hooks/useMedia";
 import Link from "next/link";

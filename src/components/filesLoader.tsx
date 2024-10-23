@@ -37,7 +37,7 @@ export default  function FilesLoader({title,fav}:prop) {
         
           <>
             <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6    w-full z-10   sticky `}>
-              <div className="flex flex-row justify-between mx-auto  items-center container">
+              <div className="flex flex-row justify-between mx-auto  items-center container bg-white">
                 <h1 className="text-2xl">{title}</h1>
                 <SearchBar  setQuery={setQuery} />
                 <UploadModal currentOwner={currentOwner} />
