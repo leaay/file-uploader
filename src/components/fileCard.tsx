@@ -108,7 +108,7 @@ export function FileCard({file}:ExtendedProp) {
 
   return (
 
-    <Card  style={{ zIndex: 0  }} className="group relative z max-h-52 overflow-hidden gap-1 outline-2 outline outline-gray-400 hover:outline-blue-500 hover:cursor-pointer ">
+    <Card  style={{ zIndex: 0  }} className="group relative z max-h-72 md:max-h-52 overflow-hidden gap-1 outline-2 outline outline-gray-400 hover:outline-blue-500 hover:cursor-pointer ">
         <CardHeader className=" gap-1  " >
             <CardTitle className=" truncate max-w-full   bg-gray-400 px-4 py-2 pr-8 group-hover:bg-blue-500">{file.name}</CardTitle>
             <CardDescription className="px-4" > {added.toDateString()}</CardDescription>
