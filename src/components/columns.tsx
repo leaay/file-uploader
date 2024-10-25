@@ -19,7 +19,7 @@ export type File = {
 }
 
 
-export const columns: ColumnDef<File>[] = [
+export const Columns: ColumnDef<File>[] = [
   {
     accessorKey: "name",
     header: "File Name",
