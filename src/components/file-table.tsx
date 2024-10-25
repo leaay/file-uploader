@@ -20,11 +20,11 @@ export function DataTable<TData, TValue>({
   })
  
   return (
-    <div className="rounded-md border w-11/12 ">
+    <div className="rounded-md border w-11/12 mb-4 ">
       <Table>
         <TableHeader className="bg-purple-100 text-base font-extrabold">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow className="fo" key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>

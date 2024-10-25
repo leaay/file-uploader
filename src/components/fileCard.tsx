@@ -8,7 +8,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "@/hooks/use-toast";
 import Image from "next/image";
-
+import { FileImage} from "lucide-react";
 
 
 interface ExtendedFile extends Doc<'files'> {
@@ -99,11 +99,10 @@ export function FileCard({file}:ExtendedProp) {
 
     function isImage(fileType:string) {
 
-        const imageTypes: FileType[] = ["image/jpeg", "image/png", "image/gif", "image/svg+xml"];
+        const imageTypes: FileType[] = ["image/jpeg", "image/png", "image/gif" ];
         return imageTypes.includes(fileType as FileType)
 
     }
-
 
 
   return (
@@ -114,9 +113,14 @@ export function FileCard({file}:ExtendedProp) {
             <CardDescription className="px-4" > {added.toDateString()}</CardDescription>
             {   
                 isImage(file.fileType) ? 
-                <Image className=" px-2 aspect-[1/1.1] w-full z-[-29]" src={file.url as string} width={400} height={400} alt="image preview" />:
-                <Image className=" px-2 aspect-[1/1.1] w-full z-[-29]" src="/pdf-placeholder.png" width={400} height={400} alt="file preview" />
+                <Image className=" px-2 aspect-[1/1.1] w-full z-[-29]" src={file.url as string} width={400} height={400} alt="image preview" /> : 
+                file.fileType !== "image/svg+xml" ? 
+                <Image className=" px-2 aspect-[1/1.1] w-full z-[-29]" src="/pdf-placeholder.png" width={400} height={400} alt="file preview" /> : 
+                null
+                
             }
+            {file.fileType === "image/svg+xml" ? <FileImage className="place-self-center m-4" width={100} height={100} /> : null}
+            {/* {file.fileType === "image/svg+xml" ? <Image className=" px-2 aspect-[1/1.1] w-full z-[-29]" src="/SVG.jpg" width={400} height={400} alt="file preview" /> : null} */}
             
         </CardHeader>
         <div className="absolute top-2 right-2"><FileCardAction file={file}/></div>

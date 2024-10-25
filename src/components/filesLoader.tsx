@@ -12,12 +12,7 @@ import { DataTable } from "./file-table";
 import { columns } from "./columns";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Grid, Table } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 
 interface prop{
     title: string;
@@ -56,16 +51,14 @@ export default  function FilesLoader({title,fav}:prop) {
                 <div className="flex  flex-col md:flex-row  gap-4 justify-end">
                 <Tabs defaultValue="grid" >
                         <TabsList>
-                          <Tooltip>
-                            <TooltipTrigger><TabsTrigger onClick={()=>setTableView(false)} value="grid"><Grid className="w-8" /></TabsTrigger></TooltipTrigger>
-                            <TooltipContent className="z-50">Grid view</TooltipContent>
-                          </Tooltip>
-                          <Tooltip>
-                            <TooltipTrigger><TabsTrigger onClick={()=>setTableView(true)} value="table"><Table className="w-8" /></TabsTrigger></TooltipTrigger>
-                            <TooltipContent className="z-50">Table view</TooltipContent>
-                          </Tooltip>
-                          
-                          
+                            <Tooltip>
+                              <TooltipTrigger><TabsTrigger onClick={()=>setTableView(false)} value="grid"><Grid className="w-8" /></TabsTrigger></TooltipTrigger>
+                              <TooltipContent className="z-50">Grid view</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                              <TooltipTrigger><TabsTrigger onClick={()=>setTableView(true)} value="table"><Table className="w-8" /></TabsTrigger></TooltipTrigger>
+                              <TooltipContent className="z-50">Table view</TooltipContent>
+                            </Tooltip>
                         </TabsList>
                   </Tabs>
                 <UploadModal currentOwner={currentOwner} />
