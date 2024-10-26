@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { FileImage, FileText, Image, ImagePlay, Star } from "lucide-react";
 import {Tooltip,TooltipContent,TooltipTrigger} from "@/components/ui/tooltip"
-import { useEffect, useRef, useState } from "react";
+// import { useEffect, useRef, useState } from "react";
 
  
 type FileTypes = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
@@ -19,30 +19,24 @@ export type File = {
 }
 
 
-export const Columns: ColumnDef<File>[] = [
+export const columns: ColumnDef<File>[] = [
   {
     accessorKey: "name",
     header: "File Name",
     cell:({row})=>{
 
       const fileName : string = row.getValue("name")
-      const textRef = useRef<HTMLDivElement | null>(null);
-      const [isTruncated, setIsTruncated] = useState(false);
 
-      useEffect(() => {
-        if (textRef.current) {
-          setIsTruncated(textRef.current.scrollWidth > textRef.current.clientWidth);
-        }
-      }, [fileName]);
+
 
       return <Tooltip>
-                {isTruncated ?
+                
                   <>
-                  <TooltipTrigger><div ref={textRef} className="max-w-32 md:max-w truncate ">{fileName}</div></TooltipTrigger>
+                  <TooltipTrigger><div  className="max-w-32 md:max-w truncate ">{fileName}</div></TooltipTrigger>
                   <TooltipContent className="max-w-96">{fileName}</TooltipContent>
-                  </> :
-                  <div ref={textRef} className="max-w-32 md:max-w truncate ">{fileName}</div>
-                }
+                  </> 
+                  {/* <div ref={textRef} className="max-w-32 md:max-w truncate ">{fileName}</div> */}
+               
              </Tooltip>
     },
   },

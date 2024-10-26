@@ -9,7 +9,7 @@ import SearchBar from "@/components/searchBar";
 import { useState } from "react";
 import useH from "@/hooks/useH";
 import { DataTable } from "./file-table";
-import { Columns } from "./Columns";
+import { columns } from "./columns";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Grid, Table } from "lucide-react";
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
@@ -72,7 +72,7 @@ export default  function FilesLoader({title,fav}:prop) {
             </div>
             }
 
-            {tableView && <DataTable data={showFiles} columns={Columns} />}
+            {tableView && <DataTable data={showFiles} columns={columns} />}
             
           </>
           
