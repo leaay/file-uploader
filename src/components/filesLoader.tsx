@@ -9,10 +9,10 @@ import SearchBar from "@/components/searchBar";
 import { useState } from "react";
 import useH from "@/hooks/useH";
 import { DataTable } from "./file-table";
-import { columns } from "./columns";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Grid, Table } from "lucide-react";
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
+import { columns } from "./columns";
 
 interface prop{
     title: string;
@@ -79,12 +79,14 @@ export default  function FilesLoader({title,fav}:prop) {
         
 
         {showFiles?.length === 0 && 
+  
           <div className="flex flex-col justify-center p-10 ">
             <Image src="/empty.svg" width={700}height={700}alt="Picture of the author"/>
             <div className="flex flex-col md:flex-row items-start p-8 justify-center gap-y-6 ">
               <h1 className="text-4xl">Upload something!</h1> 
             </div>
           </div>
+
         }
 
         {isLoading && 
