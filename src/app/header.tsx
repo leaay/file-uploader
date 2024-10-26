@@ -7,10 +7,13 @@ import useMedia from "@/hooks/useMedia";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@radix-ui/react-dropdown-menu";
+import clsx from "clsx";
+import { usePathname } from "next/navigation";
 
 export  function Header(){
 
     const isDesktop = useMedia('(min-width: 768px)');
+    const pathname = usePathname()
     
     return (
         <div className="header border-b-2 p-4 bg-white sticky top-0 z-10 ">
@@ -35,8 +38,16 @@ export  function Header(){
                         <DropdownMenuTrigger><Menu/></DropdownMenuTrigger>
                         <DropdownMenuContent className="p-12 ">
                             <DropdownMenuLabel className="pb-4" >Navigation</DropdownMenuLabel>
-                            <DropdownMenuItem><Button  variant={"link"}><Link href={'/dashboard'} className="flex gap-2 items-center" > <FileStack />Files</Link></Button></DropdownMenuItem>
-                            <DropdownMenuItem><Button  variant={"link"}><Link href={'/dashboard/favourites'} className="flex gap-2 items-center" ><Star/>Favourites </Link></Button></DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Link href="/dashboard">
+                                    <Button variant={"link"} className={clsx("flex gap-2", {"text-purple-500": pathname === "/dashboard",})}><FileStack /> Files</Button>
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Link href="/dashboard/favorites">
+                                    <Button variant={"link"} className={clsx("flex gap-2", {"text-purple-500": pathname.includes("/dashboard/favorites"),})}><Star /> Favorites</Button>
+                                </Link>
+                            </DropdownMenuItem>
                             <Separator />
 
                         </DropdownMenuContent>
@@ -49,3 +60,7 @@ export  function Header(){
         </div>  
     )           
 }
+
+
+                
+                
