@@ -3,23 +3,19 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { FileImage, FileText, Image, ImagePlay, Star } from "lucide-react";
 import {Tooltip,TooltipContent,TooltipTrigger} from "@/components/ui/tooltip"
+import FileCardActionMenu from "./fileCardActionMenu";
+import { Doc } from "../../convex/_generated/dataModel";
 // import { useEffect, useRef, useState } from "react";
 
  
 type FileTypes = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
 
-export type File = {
-    name: string;
-    ownerID: string;
-    fileID: string; 
-    fileType: FileTypes;
-    isFavourite: boolean;
-    _creationTime: number;
-    
+interface ExtendedFile extends Doc<'files'> {
+  url: string | null;
 }
 
 
-export const columns: ColumnDef<File>[] = [
+export const columns: ColumnDef<ExtendedFile>[] = [
   {
     accessorKey: "name",
     header: "File Name",
@@ -27,16 +23,10 @@ export const columns: ColumnDef<File>[] = [
 
       const fileName : string = row.getValue("name")
 
-
-
       return <Tooltip>
-                
-                  <>
-                  <TooltipTrigger><div  className="max-w-32 md:max-w truncate ">{fileName}</div></TooltipTrigger>
+                  
+                  <TooltipTrigger><div  className={` max-w-32 md:max-w truncate `}>{fileName}</div></TooltipTrigger>
                   <TooltipContent className="max-w-96">{fileName}</TooltipContent>
-                  </> 
-                  {/* <div ref={textRef} className="max-w-32 md:max-w truncate ">{fileName}</div> */}
-               
              </Tooltip>
     },
   },
@@ -91,5 +81,16 @@ export const columns: ColumnDef<File>[] = [
 
       return <div>{added.toDateString()}</div>
     },
-  }
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      
+      console.log(row.original as ExtendedFile)
+ 
+      return (
+        <FileCardActionMenu file={row.original} />
+      )
+    },
+  },
 ]
