@@ -3,6 +3,7 @@ import { Doc } from "../../convex/_generated/dataModel";
 import Image from "next/image";
 import { FileImage} from "lucide-react";
 import FileCardActionMenu from "./fileCardActionMenu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 
 interface ExtendedFile extends Doc<'files'> {
@@ -27,18 +28,27 @@ export function FileCard({file}:ExtendedProp) {
 
     }
 
+    // <Tooltip>
+    //               <TooltipTrigger><div  className={` max-w-32 md:max-w truncate flex items-center`}>{fileName}</div></TooltipTrigger>
+    //               <TooltipContent className="max-w-96">{fileName}</TooltipContent>
+    //          </Tooltip>
 
   return (
 
-    <Card  style={{ zIndex: 0  }} className="group relative z max-h-72 md:max-h-52 overflow-hidden gap-1 outline-2 outline outline-gray-400 hover:outline-blue-500 hover:cursor-pointer ">
+    <Card  style={{ zIndex: 0  }} className="group relative z max-h-72 md:max-h-52 overflow-hidden gap-1 outline-2 outline outline-gray-400   ">
         <CardHeader className=" gap-1  " >
-            <CardTitle className=" truncate max-w-full   bg-gray-400 px-4 py-2 pr-8 group-hover:bg-blue-500">{file.name}</CardTitle>
-            <CardDescription className="px-4" > {added.toDateString()}</CardDescription>
+            <Tooltip>
+                <TooltipTrigger className="truncate">
+                    <CardTitle className="flex px-4 pt-2  pr-8  w-10/12 truncate overflow-hidden text-md">{file.name}</CardTitle></TooltipTrigger>
+                <TooltipContent side="bottom" className="z-50 max-w-40">{file.name}</TooltipContent>
+            </Tooltip>
+            <CardDescription className="px-4 text-xs" > {added.toDateString()}</CardDescription>
             {   
+            
                 isImage(file.fileType) ? 
-                <Image className=" px-2 aspect-[1/1.1] w-full z-[-29]" src={file.url as string} width={400} height={400} alt="image preview" /> : 
+                <Image className=" rounded-lg flex items-center justify-center px-2 aspect-[1/1.1] w-full z-[-29]" src={file.url as string} width={400} height={400} alt="image preview" /> : 
                 file.fileType !== "image/svg+xml" ? 
-                <Image className=" px-2 aspect-[1/1.1] w-full z-[-29]" src="/pdf-placeholder.png" width={400} height={400} alt="file preview" /> : 
+                <Image className="rounded-lg h-full flex items-center justify-center px-2 aspect-[1/1.1] w-full z-[-29]" src="/pdf-placeholder.png" width={400} height={400} alt="file preview" /> : 
                 null
                 
             }

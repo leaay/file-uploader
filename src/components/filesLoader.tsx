@@ -6,7 +6,7 @@ import UploadModal  from "@/components/uploadModal"
 import { FileCard } from "@/components/fileCard";
 import Image from 'next/image'
 import SearchBar from "@/components/searchBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useH from "@/hooks/useH";
 import { DataTable } from "./file-table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -19,17 +19,31 @@ interface prop{
     fav?: boolean;
 }
 
+type DataViewType = 'grid' | 'table';
+
 export default  function FilesLoader({title,fav}:prop) {
 
   const org = useOrganization()
   const {user} = useUser()
   const [query , setQuery] = useState<string | undefined>(undefined)
-  const [tableView , setTableView] = useState<boolean>(false)
+  const [dataView, setDataView] = useState<DataViewType>('grid');
   const currentOwner = org.organization?.id ? org.organization.id : user?.id;
   const headerHeight = useH('header');
   const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip' , query:query, fav:fav ? true : false}) || []; 
   
   const isLoading = showFiles === undefined
+
+  useEffect(() => {
+    const savedLayout  = localStorage.getItem('dataView') as DataViewType;
+    if (savedLayout !== null) {
+      setDataView(savedLayout); // Convert the saved string back to boolean
+    }
+  }, []);
+
+  const toggleView = (prop:DataViewType) => {
+    setDataView(prop);
+    localStorage.setItem('dataView', prop); // Save the new 
+  };
 
   return (
     
@@ -42,21 +56,21 @@ export default  function FilesLoader({title,fav}:prop) {
 
         
           <>
-            <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6  bg-white   w-full z-10   sticky `}>
+            <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6 m-1  bg-white   w-full z-10   sticky `}>
               <div className="flex flex-row justify-between mx-auto  items-center container ">
                 <div className="flex  flex-col md:flex-row  gap-4 w-full justify-between">
                   <h1 className="text-2xl ">{title}</h1>
                   <SearchBar  setQuery={setQuery} />
                 </div>
                 <div className="flex  flex-col md:flex-row  gap-4 justify-end">
-                <Tabs defaultValue="grid" >
-                        <TabsList>
+                <Tabs value={dataView} defaultValue={dataView} >
+                        <TabsList >
                             <Tooltip>
-                              <TooltipTrigger><TabsTrigger onClick={()=>setTableView(false)} value="grid"><Grid className="w-8" /></TabsTrigger></TooltipTrigger>
+                              <TooltipTrigger><TabsTrigger onClick={()=>toggleView("grid")} value="grid"><Grid className="w-8" /></TabsTrigger></TooltipTrigger>
                               <TooltipContent className="z-50">Grid view</TooltipContent>
                             </Tooltip>
                             <Tooltip>
-                              <TooltipTrigger><TabsTrigger onClick={()=>setTableView(true)} value="table"><Table className="w-8" /></TabsTrigger></TooltipTrigger>
+                              <TooltipTrigger><TabsTrigger onClick={()=>toggleView("table")} value="table"><Table className="w-8" /></TabsTrigger></TooltipTrigger>
                               <TooltipContent className="z-50">Table view</TooltipContent>
                             </Tooltip>
                         </TabsList>
@@ -66,13 +80,13 @@ export default  function FilesLoader({title,fav}:prop) {
               </div>
             </div>
             
-            {!tableView &&
+            {dataView === 'grid'  &&
             <div className=" grid grid-cols-1  sm:grid-cols-2 w-11/12 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7  px-8   ">
                   {showFiles?.map((file) => <FileCard key={file._id} file={file} /> )}
             </div>
             }
 
-            {tableView && <DataTable data={showFiles} columns={columns} />}
+            {dataView === 'table' && <DataTable data={showFiles} columns={columns} />}
             
           </>
           
