@@ -1,19 +1,23 @@
 'use client'
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
-import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
-import { FileStack, Menu, Star } from "lucide-react";
+import {  Menu } from "lucide-react";
 import useMedia from "@/hooks/useMedia";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@radix-ui/react-dropdown-menu";
-import clsx from "clsx";
-import { usePathname } from "next/navigation";
+import { useState } from "react";
+import Navigation from "@/components/navigation";
+
 
 export  function Header(){
 
     const isDesktop = useMedia('(min-width: 768px)');
-    const pathname = usePathname()
+    const [isMenuOpen , setIsMenuOpen] = useState<boolean>(false)
+
+    const openMenu = () => {
+        setIsMenuOpen(true);
+        document.body.classList.add('overflow-hidden'); 
+    };
+
     
     return (
         <div className="header border-b-2 p-4 bg-white sticky top-0 z-10 ">
@@ -33,26 +37,8 @@ export  function Header(){
                         },
                     }} />
 
-                {!isDesktop &&
-                    <DropdownMenu>
-                        <DropdownMenuTrigger><Menu/></DropdownMenuTrigger>
-                        <DropdownMenuContent className="p-12 ">
-                            <DropdownMenuLabel className="pb-4" >Navigation</DropdownMenuLabel>
-                            <DropdownMenuItem>
-                                <Link href="/dashboard">
-                                    <Button variant={"link"} className={clsx("flex gap-2", {"text-purple-500": pathname === "/dashboard",})}><FileStack /> Files</Button>
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Link href="/dashboard/favorites">
-                                    <Button variant={"link"} className={clsx("flex gap-2", {"text-purple-500": pathname.includes("/dashboard/favorites"),})}><Star /> Favorites</Button>
-                                </Link>
-                            </DropdownMenuItem>
-                            <Separator />
-
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                }
+                    {!isDesktop && <Button onClick={openMenu} className="p-0" variant={"ghost"}><Menu /></Button>}
+                    {!isDesktop && isMenuOpen && <Navigation mobile={true} setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen}/>}
 
                 </div>
 

@@ -56,7 +56,7 @@ export default  function FilesLoader({title,fav}:prop) {
 
         
           <>
-            <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6 m-1  bg-white   w-full z-10   sticky `}>
+            <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6 m-1  bg-white z-[5]  w-full    sticky `}>
               <div className="flex flex-row justify-between mx-auto  items-center container ">
                 <div className="flex  flex-col md:flex-row  gap-4 w-full justify-between">
                   <h1 className="text-2xl ">{title}</h1>
