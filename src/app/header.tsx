@@ -22,7 +22,7 @@ export  function Header(){
     return (
         <div className="header border-b-2 p-4 bg-white sticky top-0 z-10 ">
             <div className="container mx-auto flex justify-between items-center">
-                <div className="font-medium text-l  md:text-2xl flex items-center gap-x-2"><Image src="/logo.svg" width={66} height={66} alt="logo"/>Uploaderv1</div>
+                <div className="font-medium text-l  md:text-2xl flex  items-center  gap-x-2"><Image src="/logo.svg" width={66} height={66} alt="logo"/><h1 className="hidden md:block">Uploaderv1</h1></div>
                 <div className="flex gap-x-4 md:gap-x-12">
                     <OrganizationSwitcher appearance={{
                         elements:{

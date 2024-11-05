@@ -13,6 +13,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Grid, Rows4 } from "lucide-react";
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import { columns } from "./columns";
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface prop{
     title: string;
@@ -29,25 +30,25 @@ export default  function FilesLoader({title,fav}:prop) {
   const [dataView, setDataView] = useState<DataViewType>('grid');
   const currentOwner = org.organization?.id ? org.organization.id : user?.id;
   const headerHeight = useH('header');
-  const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip' , query:query, fav:fav ? true : false}) || []; 
-  
-  const isLoading = showFiles === undefined
+  const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip' , query:query, fav:fav ? true : false}) || undefined; 
+   
+  console.log(showFiles)
 
   useEffect(() => {
     const savedLayout  = localStorage.getItem('dataView') as DataViewType;
     if (savedLayout !== null) {
-      setDataView(savedLayout); // Convert the saved string back to boolean
+      setDataView(savedLayout);
     }
   }, []);
 
   const toggleView = (prop:DataViewType) => {
     setDataView(prop);
-    localStorage.setItem('dataView', prop); // Save the new 
+    localStorage.setItem('dataView', prop); 
   };
 
   return (
     
-    <div className={` relative  flex-1 flex ${showFiles?.length === 0 || isLoading ? 'justify-start' : ''} items-center flex-col`}>
+    <div className={` relative  flex-1 flex ${showFiles?.length === 0  ? 'justify-start' : ''} items-center flex-col`}>
       <TooltipProvider >
         
         <SignedOut>
@@ -86,14 +87,16 @@ export default  function FilesLoader({title,fav}:prop) {
             </div>
             }
 
-            {dataView === 'table' && <DataTable data={showFiles} columns={columns} />}
+            {dataView === 'table'&& showFiles && <DataTable data={showFiles} columns={columns} />}
             
           </>
           
         
 
         {showFiles?.length === 0 && 
-  
+
+
+
           <div className="flex flex-col justify-center p-10 ">
             <Image src="/empty.svg" width={700}height={700}alt="Picture of the author"/>
             <div className="flex flex-col md:flex-row items-start p-8 justify-center gap-y-6 ">
@@ -103,10 +106,30 @@ export default  function FilesLoader({title,fav}:prop) {
 
         }
 
-        {isLoading && 
-          <div className="flex flex-col gap-4 container items-center py-24 ">
-            <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
-          </div>   
+        {showFiles === undefined && dataView === 'grid' && 
+            <div className=" grid grid-cols-1  sm:grid-cols-2 w-11/12 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7  px-8   ">
+              {
+              Array.from({length:14}).map((_,index)=>(<Skeleton className="w-full h-72 bg-gray-300  md:h-52"/>))
+              }
+            </div>
+        }
+
+        {showFiles === undefined &&  dataView === 'table' && 
+           <div className="grid w-11/12">
+           <div className="grid  mb-1">
+             <Skeleton className="h-10 bg-gray-400 rounded w-full" />
+           </div>
+       
+           {Array.from({ length: 12 }).map((_, index) => (
+             <div key={index} className="grid grid-cols-5 gap-1 mb-1">
+               <Skeleton className="h-10 w-full bg-gray-300 rounded" />
+               <Skeleton className="h-10 w-full bg-gray-300 rounded" />
+               <Skeleton className="h-10 w-full bg-gray-300 rounded" />
+               <Skeleton className="h-10 w-full bg-gray-300 rounded" />
+               <Skeleton className="h-10 w-full bg-gray-300 rounded" />
+             </div>
+           ))}
+         </div>
         }
 
         

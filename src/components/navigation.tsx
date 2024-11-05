@@ -36,7 +36,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
 
         return (
 
-            <div style={{ top: `calc(${headerHeight}px  )`, maxHeight:`calc(100vh - ${headerHeight}px - 2rem)`}}  className="p-8  sticky top-8 mb-2rem ">
+            <div style={{ top: `calc(${headerHeight}px  )`, maxHeight:`calc(100vh - ${headerHeight}px )`}}  className="p-8  sticky top-8 mb-2rem  h-screen border-r-2 ">
                     <div className="flex flex-col gap-4 py-4 items-start "> 
                         <Link href="/dashboard">
                             <Button variant={"link"} className={clsx("flex gap-2", {"text-purple-500": pathname === "/dashboard",})}><FileStack /> Files</Button>
@@ -45,7 +45,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
                             <Button variant={"link"} className={clsx("flex gap-2", {"text-purple-500": pathname.includes("/dashboard/favorites"),})}><StarIcon /> Favorites</Button>
                         </Link>
                     </div>
-                  </div>
+            </div>
         
           );
 
