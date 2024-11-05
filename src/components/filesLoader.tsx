@@ -109,7 +109,7 @@ export default  function FilesLoader({title,fav}:prop) {
         {showFiles === undefined && dataView === 'grid' && 
             <div className=" grid grid-cols-1  sm:grid-cols-2 w-11/12 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7  px-8   ">
               {
-              Array.from({length:14}).map((_,index)=>(<Skeleton className="w-full h-72 bg-gray-300  md:h-52"/>))
+              Array.from({length:14}).map((index)=>(<Skeleton key={index + '1'} className="w-full h-72 bg-gray-300  md:h-52"/>))
               }
             </div>
         }
@@ -120,8 +120,8 @@ export default  function FilesLoader({title,fav}:prop) {
              <Skeleton className="h-10 bg-gray-400 rounded w-full" />
            </div>
        
-           {Array.from({ length: 12 }).map((_, index) => (
-             <div key={index} className="grid grid-cols-5 gap-1 mb-1">
+           {Array.from({ length: 12 }).map((index) => (
+             <div key={index + '1'} className="grid grid-cols-5 gap-1 mb-1">
                <Skeleton className="h-10 w-full bg-gray-300 rounded" />
                <Skeleton className="h-10 w-full bg-gray-300 rounded" />
                <Skeleton className="h-10 w-full bg-gray-300 rounded" />
