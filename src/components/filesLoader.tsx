@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import useH from "@/hooks/useH";
 import { DataTable } from "./file-table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Grid, Table } from "lucide-react";
+import { Grid, Rows4 } from "lucide-react";
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import { columns } from "./columns";
 
@@ -70,7 +70,7 @@ export default  function FilesLoader({title,fav}:prop) {
                               <TooltipContent className="z-50">Grid view</TooltipContent>
                             </Tooltip>
                             <Tooltip>
-                              <TooltipTrigger><TabsTrigger onClick={()=>toggleView("table")} value="table"><Table className="w-8" /></TabsTrigger></TooltipTrigger>
+                              <TooltipTrigger><TabsTrigger onClick={()=>toggleView("table")} value="table"><Rows4 className="w-8"  /></TabsTrigger></TooltipTrigger>
                               <TooltipContent className="z-50">Table view</TooltipContent>
                             </Tooltip>
                         </TabsList>

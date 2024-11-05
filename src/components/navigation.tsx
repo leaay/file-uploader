@@ -4,7 +4,6 @@ import {  FileStack, StarIcon, X } from "lucide-react";
 import Link from "next/link";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 
 interface BaseProps {
@@ -53,13 +52,6 @@ const Navigation: React.FC<NavigationProps> = (props) => {
     }
 
     if(props.mobile){
-
-        const openMenu = () => {
-            props.setIsMenuOpen(true);
-            document.body.classList.add('overflow-hidden'); 
-        };
-
-
 
         const closeMenu = () => {
             props.setIsMenuOpen(false);

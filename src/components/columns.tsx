@@ -24,7 +24,8 @@ export const columns: ColumnDef<ExtendedFile>[] = [
       const fileName : string = row.getValue("name")
 
       return <Tooltip>
-                  <TooltipTrigger><div  className={` max-w-32 md:max-w truncate flex items-center`}>{fileName}</div></TooltipTrigger>
+                  <TooltipTrigger>
+                    <div  className={` max-w-32 md:max-w truncate flex items-center`}>{fileName}</div></TooltipTrigger>
                   <TooltipContent className="max-w-96">{fileName}</TooltipContent>
              </Tooltip>
     },
