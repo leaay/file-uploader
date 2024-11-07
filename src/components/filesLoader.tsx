@@ -57,7 +57,7 @@ export default  function FilesLoader({title,fav}:prop) {
 
         
           <>
-            <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6 m-1  bg-white z-[5]  w-full    sticky `}>
+            <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6   bg-white z-[5]  w-full    sticky `}>
               <div className="flex flex-row justify-between mx-auto  items-center container ">
                 <div className="flex  flex-col md:flex-row  gap-4 w-full justify-between">
                   <h1 className="text-2xl ">{title}</h1>
@@ -82,7 +82,7 @@ export default  function FilesLoader({title,fav}:prop) {
             </div>
             
             {dataView === 'grid'  &&
-            <div className=" grid grid-cols-1  sm:grid-cols-2 w-11/12 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7  px-8   ">
+            <div className=" grid grid-cols-1 pt-4 sm:grid-cols-2 w-11/12 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7  px-8   ">
                   {showFiles?.map((file) => <FileCard key={file._id} file={file} /> )}
             </div>
             }

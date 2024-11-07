@@ -6,6 +6,7 @@ import useMedia from "@/hooks/useMedia";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Navigation from "@/components/navigation";
+import Link from "next/link";
 
 
 export  function Header(){
@@ -22,7 +23,7 @@ export  function Header(){
     return (
         <div className="header border-b-2 p-4 bg-white sticky top-0 z-10 ">
             <div className="container mx-auto flex justify-between items-center">
-                <div className="font-medium text-l  md:text-2xl flex  items-center  gap-x-2"><Image src="/logo.svg" width={66} height={66} alt="logo"/><h1 className="hidden md:block">Uploaderv1</h1></div>
+                <Link href={'/'} className="font-medium text-l  md:text-2xl flex  items-center  gap-x-2"><Image src="/logo.svg" width={66} height={66} alt="logo"/><h1 className="hidden md:block tracking-wide">Uploaderv1</h1></Link>
                 <div className="flex gap-x-4 md:gap-x-12">
                     <OrganizationSwitcher appearance={{
                         elements:{
