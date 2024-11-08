@@ -88,9 +88,9 @@ export default  function Home() {
                   Mobile friendly
                 </p>
                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                Access your files anytime, anywhere."
+                Access your files anytime, anywhere.
                 Quickly and securely manage your files from any device. 
-                Our responsive design ensures that you can upload, download, and organize your documents, photos, and videos with ease, whether you&quot;re at your desk or on the go.
+                Our responsive design ensures that you can upload, download, and organize your documents, photos, and videos with ease, whether you're at your desk or on the go.
                 </p>
               </div>
               <div className="relative min-h-[30rem] w-full grow [container-type:inline-size] max-lg:mx-auto max-lg:max-w-sm">
