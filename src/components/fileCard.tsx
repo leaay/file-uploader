@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FileImage} from "lucide-react";
 import FileCardActionMenu from "./fileCardActionMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { useEffect, useState } from "react";
 
 
 interface ExtendedFile extends Doc<'files'> {
@@ -20,41 +21,46 @@ type FileType = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "ap
 export function FileCard({file}:ExtendedProp) {
 
     const added = new Date(file._creationTime)
+    const [src, setSrc] = useState("");
 
-    function isImage(fileType:string) {
 
-        const imageTypes: FileType[] = ["image/jpeg", "image/png", "image/gif" ];
-        return imageTypes.includes(fileType as FileType)
+        useEffect(() => {
+            switch (file.fileType) {
+            case "image/jpeg":
+                setSrc("/jpeg.svg");
+                break;
+            case "image/png":
+                setSrc("/png.svg");
+                break;
+            case "image/gif":
+                setSrc("/gif.svg");
+                break;
+            case "image/svg+xml":
+                setSrc("/svg.svg");
+                break;
+            case "application/pdf":
+                setSrc("/pdf.svg");
+                break;
+            default:
+                setSrc("/default.svg"); 
+            }
+        }, []);
 
-    }
 
-    // <Tooltip>
-    //               <TooltipTrigger><div  className={` max-w-32 md:max-w truncate flex items-center`}>{fileName}</div></TooltipTrigger>
-    //               <TooltipContent className="max-w-96">{fileName}</TooltipContent>
-    //          </Tooltip>
+
 
   return (
 
-    <Card  style={{ zIndex: 0  }} className="group relative z max-h-72 md:max-h-52 overflow-hidden gap-1 outline-2 outline outline-gray-400   ">
-        <CardHeader className=" gap-1  " >
+    <Card  style={{ zIndex: 0  }} className="group relative z max-h-72 md:max-h-80  gap-2 outline-1 outline outline-gray-400 p-2 overflow-hidden shadow-lg shadow-gray-200 ">
+        <CardHeader className=" gap-1 h-full " >
             <Tooltip>
                 <TooltipTrigger className="truncate">
-                    <CardTitle className="flex px-4 pt-2  pr-8  w-10/12 truncate overflow-hidden text-md">{file.name}</CardTitle></TooltipTrigger>
+                    <CardTitle className="flex px-2  w-10/12 truncate overflow-hidden text-md">{file.name}</CardTitle></TooltipTrigger>
                 <TooltipContent side="bottom" className="z-50 max-w-40">{file.name}</TooltipContent>
             </Tooltip>
-            <CardDescription className="px-4 text-xs" > {added.toDateString()}</CardDescription>
-            {   
-            
-                isImage(file.fileType) ? 
-                <Image className=" rounded-lg flex items-center justify-center px-2 aspect-[1/1.1] w-full z-[-29]" src={file.url as string} width={400} height={400} alt="image preview" /> : 
-                file.fileType !== "image/svg+xml" ? 
-                <Image className="rounded-lg h-full flex items-center justify-center px-2 aspect-[1/1.1] w-full z-[-29]" src="/pdf-placeholder.png" width={400} height={400} alt="file preview" /> : 
-                null
-                
-            }
-            {file.fileType === "image/svg+xml" ? <FileImage className="place-self-center m-4" width={100} height={100} /> : null}
-            {/* {file.fileType === "image/svg+xml" ? <Image className=" px-2 aspect-[1/1.1] w-full z-[-29]" src="/SVG.jpg" width={400} height={400} alt="file preview" /> : null} */}
-            
+            <CardDescription className="px-2 text-xs" > uploaded: {added.toLocaleDateString()}</CardDescription>
+            <div className="w-full h-full  flex items-center justify-center"><Image className="rounded-lg h-full  px-2 aspect-[1/1.1]  z-[-29] " src={src} width={100} height={100} alt="file preview" /></div>
+
         </CardHeader>
         <div className="absolute top-2 right-2"><FileCardActionMenu file={file} /></div>
         

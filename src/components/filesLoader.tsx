@@ -79,6 +79,7 @@ export default  function FilesLoader({title,fav}:prop) {
                 <UploadModal currentOwner={currentOwner} />
                 </div>
               </div>
+              {/* <div className="h-4 w-full bg-red-50" > <p>selected : </p></div> */}
             </div>
             
             {dataView === 'grid'  &&
@@ -94,8 +95,6 @@ export default  function FilesLoader({title,fav}:prop) {
         
 
         {showFiles?.length === 0 && 
-
-
 
           <div className="flex flex-col justify-center p-10 ">
             <Image src="/empty.svg" width={700}height={700}alt="Picture of the author"/>
@@ -135,8 +134,8 @@ export default  function FilesLoader({title,fav}:prop) {
         
 
       </SignedIn>
-      
       </TooltipProvider>
+
     </div>
   );
 }

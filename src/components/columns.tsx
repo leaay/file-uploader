@@ -1,11 +1,11 @@
 "use client"
  
 import { ColumnDef } from "@tanstack/react-table"
-import { FileImage, FileText, Image, ImagePlay, Star } from "lucide-react";
 import {Tooltip,TooltipContent,TooltipTrigger} from "@/components/ui/tooltip"
 import FileCardActionMenu from "./fileCardActionMenu";
 import { Doc } from "../../convex/_generated/dataModel";
-
+import Image from "next/image";
+import { Star } from "lucide-react";
 
  
 type FileTypes = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
@@ -40,25 +40,28 @@ export const columns: ColumnDef<ExtendedFile>[] = [
       let helperIcon : JSX.Element
       switch (FileType) {
         case "image/png":
+          simplifyiedType = "png"
+          helperIcon = <Image alt="type" src={'png.svg'} width={33} height={33} />
+          break;
         case "image/jpeg":
-          simplifyiedType = "Image"
-          helperIcon = <Image />
+          simplifyiedType = "jpg"
+          helperIcon = <Image alt="type" src={'jpeg.svg'} width={33} height={33} />
           break;
         case "image/svg+xml":
-          simplifyiedType = "SVG";
-          helperIcon = <FileImage />
+          simplifyiedType = "svg";
+          helperIcon = <Image alt="type" src={'svg.svg'} width={33} height={33} />
           break;
         case "application/pdf":
-          simplifyiedType = 'PDF';
-          helperIcon = <FileText />
+          simplifyiedType = 'pdf';
+          helperIcon = <Image alt="type" src={'pdf.svg'}width={33} height={33} />
           break;
         case "image/gif":
-          simplifyiedType = "GIF"
-          helperIcon = <ImagePlay />
+          simplifyiedType = "gif"
+          helperIcon = <Image alt="type" src={'gif.svg'}width={33} height={33} />
           break
       }
 
-      return <div className="flex items-center gap-2">{helperIcon}{simplifyiedType} </div>
+      return <div className="flex items-center gap-2">{helperIcon} </div>
 
     }
   },
