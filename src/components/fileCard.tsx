@@ -1,7 +1,6 @@
 import {Card,CardDescription,CardHeader,CardTitle,} from "@/components/ui/card"
 import { Doc } from "../../convex/_generated/dataModel";
 import Image from "next/image";
-import { FileImage} from "lucide-react";
 import FileCardActionMenu from "./fileCardActionMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useEffect, useState } from "react";
@@ -15,7 +14,7 @@ interface ExtendedProp {
     file: ExtendedFile
 }
 
-type FileType = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
+// type FileType = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
 
 
 export function FileCard({file}:ExtendedProp) {
@@ -45,8 +44,6 @@ export function FileCard({file}:ExtendedProp) {
                 setSrc("/default.svg"); 
             }
         }, []);
-
-
 
 
   return (

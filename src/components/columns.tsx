@@ -36,27 +36,27 @@ export const columns: ColumnDef<ExtendedFile>[] = [
     cell:({row})=>{
 
       const FileType = row.getValue("fileType") as FileTypes
-      let simplifyiedType : string
+      // let simplifyiedType : string
       let helperIcon : JSX.Element
       switch (FileType) {
         case "image/png":
-          simplifyiedType = "png"
+          // simplifyiedType = "png"
           helperIcon = <Image alt="type" src={'png.svg'} width={33} height={33} />
           break;
         case "image/jpeg":
-          simplifyiedType = "jpg"
+          // simplifyiedType = "jpg"
           helperIcon = <Image alt="type" src={'jpeg.svg'} width={33} height={33} />
           break;
         case "image/svg+xml":
-          simplifyiedType = "svg";
+          // simplifyiedType = "svg";
           helperIcon = <Image alt="type" src={'svg.svg'} width={33} height={33} />
           break;
         case "application/pdf":
-          simplifyiedType = 'pdf';
+          // simplifyiedType = 'pdf';
           helperIcon = <Image alt="type" src={'pdf.svg'}width={33} height={33} />
           break;
         case "image/gif":
-          simplifyiedType = "gif"
+          // simplifyiedType = "gif"
           helperIcon = <Image alt="type" src={'gif.svg'}width={33} height={33} />
           break
       }

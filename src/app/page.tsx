@@ -133,7 +133,7 @@ export default  function Home() {
                 We prioritize your data security with end-to-end encryption and multi-layer protection. Rest easy knowing that your files are safe from unauthorized access.
                 </p>
               </div>
-              <div className="flex flex-1 items-center [container-type:inline-size] max-lg:py-6 lg:pb-2">
+              <div className="flex flex-1 items-center justify-center [container-type:inline-size] max-lg:py-6 lg:pb-2">
                 <img
                   className="h-[min(152px,40cqw)] object-cover object-center"
                   src="icons.png"
