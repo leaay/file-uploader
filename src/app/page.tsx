@@ -50,7 +50,7 @@ export default  function Home() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link href={"/dashboard"} ><Button>Get Started</Button></Link>
-              <a href="#" className="text-sm/6 font-semibold text-gray-900">
+              <a href="#section-2" className="text-sm/6 font-semibold text-gray-900">
                 Learn more <span aria-hidden="true">→</span>
               </a>
             </div>
@@ -73,9 +73,9 @@ export default  function Home() {
       </div>
 
       {/* 2  */}        
-      <div className="bg-gray-50 py-24 sm:py-32">
+      <div id='section-2' className="bg-gray-50 py-24 sm:py-32">
       <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="text-center text-base/7 font-semibold text-indigo-600">Deploy faster</h2>
+        <h2 className="text-center text-base/7 font-semibold text-purple-600">Deploy faster</h2>
         <p className="mx-auto mt-2 max-w-lg text-balance text-center text-4xl font-semibold tracking-tight text-gray-950 sm:text-5xl">
           Everything you need to deploy your app
         </p>
@@ -88,7 +88,9 @@ export default  function Home() {
                   Mobile friendly
                 </p>
                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                  Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.
+                Access your files anytime, anywhere."
+                Quickly and securely manage your files from any device. 
+                Our responsive design ensures that you can upload, download, and organize your documents, photos, and videos with ease, whether you’re at your desk or on the go.
                 </p>
               </div>
               <div className="relative min-h-[30rem] w-full grow [container-type:inline-size] max-lg:mx-auto max-lg:max-w-sm">
@@ -109,13 +111,13 @@ export default  function Home() {
               <div className="px-8 pt-8 sm:px-10 sm:pt-10">
                 <p className="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center">Performance</p>
                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit maiores impedit.
+                Experience lightning-fast uploads and downloads. Our service is built for efficiency, ensuring minimal waiting time and optimized performance, no matter the file size.
                 </p>
               </div>
               <div className="flex flex-1 items-center justify-center px-8 max-lg:pb-12 max-lg:pt-10 sm:px-10 lg:pb-2">
                 <img
                   className="w-full max-lg:max-w-xs"
-                  src="https://tailwindui.com/plus/img/component-images/bento-03-performance.png"
+                  src="graph.png"
                   alt=""
                 />
               </div>
@@ -128,13 +130,13 @@ export default  function Home() {
               <div className="px-8 pt-8 sm:px-10 sm:pt-10">
                 <p className="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center">Security</p>
                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                  Morbi viverra dui mi arcu sed. Tellus semper adipiscing suspendisse semper morbi.
+                We prioritize your data security with end-to-end encryption and multi-layer protection. Rest easy knowing that your files are safe from unauthorized access.
                 </p>
               </div>
               <div className="flex flex-1 items-center [container-type:inline-size] max-lg:py-6 lg:pb-2">
                 <img
                   className="h-[min(152px,40cqw)] object-cover object-center"
-                  src="https://tailwindui.com/plus/img/component-images/bento-03-security.png"
+                  src="icons.png"
                   alt=""
                 />
               </div>
@@ -149,7 +151,7 @@ export default  function Home() {
                   Powerful APIs
                 </p>
                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                  Sit quis amet rutrum tellus ullamcorper ultricies libero dolor eget sem sodales gravida.
+                Use our APIs to customize and extend your storage solution. Easily integrate file management features into your own apps and workflows, giving you more control over your data.
                 </p>
               </div>
               <div className="relative min-h-[30rem] w-full grow">
@@ -162,7 +164,26 @@ export default  function Home() {
                       <div className="border-r border-gray-600/10 px-4 py-2">App.jsx</div>
                     </div>
                   </div>
-                  <div className="px-6 pb-14 pt-6">{/* Your code example */}</div>
+                  <div className="text-white px-6 pb-14 pt-6">
+                  <pre className="bg-gray-800 p-4 rounded-md overflow-x-auto">
+                  <code>
+                        {`const file = document.querySelector('#fileInput').files[0];
+const formData = new FormData();
+formData.append("file", file);
+
+fetch("https://api.uploaderv1.com/upload", {
+method: "POST",
+headers: {
+ Authorization: "Bearer YOUR_API_KEY",
+  },
+  body: formData,
+})
+.then(response => response.json())
+.then(data => console.log("File uploaded:", data))
+.catch(error => console.error("Error:", error));`}
+                      </code>
+                    </pre>
+                  </div>
                 </div>
               </div>
             </div>
@@ -191,10 +212,11 @@ export default  function Home() {
           </svg>
           <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
             <h2 className="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Boost your productivity. Start using our app today.
+            Simplify your file management. Access your files anytime, anywhere.
             </h2>
             <p className="mt-6 text-pretty text-lg/8 text-gray-300">
-              Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla.
+              Organize, store, and share files securely with just a few clicks. Our platform makes it easy to manage your data,
+              collaborate in real-time, and keep your files safe and accessible.
             </p>
 
           </div>
