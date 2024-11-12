@@ -52,7 +52,7 @@ export default  function FilesLoader({title,fav}:prop) {
     localStorage.setItem('dataView', prop); 
   };
 
-  type FileTypes = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
+
 
   return (
     
