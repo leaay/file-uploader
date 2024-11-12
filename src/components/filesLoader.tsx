@@ -14,6 +14,7 @@ import { Grid, Rows4 } from "lucide-react";
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import { columns } from "./columns";
 import { Skeleton } from "@/components/ui/skeleton"
+import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select"
 
 interface prop{
     title: string;
@@ -26,11 +27,16 @@ export default  function FilesLoader({title,fav}:prop) {
 
   const org = useOrganization()
   const {user} = useUser()
+
   const [query , setQuery] = useState<string | undefined>(undefined)
+  const [typeQuery , setTypeQuery] = useState<string  | undefined>(undefined)
+
   const [dataView, setDataView] = useState<DataViewType>('grid');
+
   const currentOwner = org.organization?.id ? org.organization.id : user?.id;
   const headerHeight = useH('header');
-  const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip' , query:query, fav:fav ? true : false}) || undefined; 
+
+  const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip' , query:query , typeQuery:typeQuery , fav:fav ? true : false}) || undefined; 
    
   console.log(showFiles)
 
@@ -46,6 +52,8 @@ export default  function FilesLoader({title,fav}:prop) {
     localStorage.setItem('dataView', prop); 
   };
 
+  type FileTypes = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
+
   return (
     
     <div className={` relative  flex-1 flex ${showFiles?.length === 0  ? 'justify-start' : ''} items-center flex-col`}>
@@ -59,11 +67,25 @@ export default  function FilesLoader({title,fav}:prop) {
           <>
             <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6   bg-white z-[5]  w-full    sticky `}>
               <div className="flex flex-row justify-between mx-auto  items-center container ">
-                <div className="flex  flex-col md:flex-row  gap-4 w-full justify-between">
+                <div className="flex  flex-col md:flex-row  gap-4 w-full justify-between items-center">
                   <h1 className="text-2xl ">{title}</h1>
                   <SearchBar  setQuery={setQuery} />
                 </div>
+
                 <div className="flex  flex-col md:flex-row  gap-4 justify-end">
+                <Select onValueChange={(value: string) => setTypeQuery(value === "ALL" ? undefined : value)}>
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Filter by type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ALL">ALL</SelectItem>
+                            <SelectItem value="image/jpeg">JPG</SelectItem>
+                            <SelectItem value="image/png">PNG</SelectItem>
+                            <SelectItem value="image/gif">GIF</SelectItem>
+                            <SelectItem value="image/svg+xml">SVG</SelectItem>
+                          <SelectItem value="application/pdf">PDF</SelectItem>
+                      </SelectContent>
+                    </Select>
                 <Tabs value={dataView} defaultValue={dataView} >
                         <TabsList >
                             <Tooltip>
@@ -94,7 +116,7 @@ export default  function FilesLoader({title,fav}:prop) {
           
         
 
-        {showFiles?.length === 0 && 
+         {showFiles?.length === 0 && 
 
           <div className="flex flex-col justify-center p-10 ">
             <Image src="/empty.svg" width={700}height={700}alt="Picture of the author"/>
@@ -103,7 +125,7 @@ export default  function FilesLoader({title,fav}:prop) {
             </div>
           </div>
 
-        }
+        } 
 
         {showFiles === undefined && dataView === 'grid' && 
             <div className=" grid grid-cols-1  sm:grid-cols-2 w-11/12 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7  px-8   ">

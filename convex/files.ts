@@ -33,9 +33,12 @@ export const createFile = mutation({
 export const getFile = query({
 
     args:{
+
         ownerID: v.string(),
         query: v.optional(v.string()),
-        fav: v.optional(v.boolean())
+        typeQuery: v.optional(v.string()),
+        fav: v.optional(v.boolean()),
+        
     },
 
     async handler(ctx ,args){
@@ -52,16 +55,27 @@ export const getFile = query({
         
         console.log(args.query?.toLocaleLowerCase())
 
+
         const baseQuery = args.fav
-                ? ctx.db
-                    .query("files")
-                    .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()))
-                    .filter((q) => q.eq(q.field('isFavourite'), args.fav))
-                : ctx.db
-                    .query("files")
-                    .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()));
+        ? ctx.db
+            .query("files")
+            .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()))
+            .filter((q) =>
+                args.typeQuery ? 
+                q.and(q.eq(q.field('isFavourite'), args.fav),q.eq(q.field('fileType'),args.typeQuery)) : 
+                q.eq(q.field('isFavourite'), args.fav)
+            )
+        : ctx.db
+            .query("files")
+            .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()))
+            .filter((q) =>
+                args.typeQuery
+                  ? q.eq(q.field('fileType'), args.typeQuery)
+                  : true
+            )
+            
 
-
+        
 
         const files =  await baseQuery.collect()
 
@@ -78,6 +92,76 @@ export const getFile = query({
     },
     
 });
+
+// export const getFile = query({
+//     args: {
+//       ownerID: v.string(),
+//       query: v.optional(v.string()),
+//       fav: v.optional(v.boolean()),
+//       paginationOpts: paginationOptsValidator, // Validate pagination opts
+//     },
+  
+//     async handler(ctx, args) {
+//       const isUserLoggedIn = await ctx.auth.getUserIdentity();
+  
+//       // If the user is not logged in, return empty data
+//       if (!isUserLoggedIn) {
+//         return {
+//           data: [],
+//           isDone: true,
+//           continueCursor: null,
+//           page: [], // Empty array for the current page
+//         };
+//       }
+  
+//       // Deny access if the ownerID is 'skip'
+//       if (args.ownerID === 'skip') {
+//         throw new ConvexError('ACCESS DENIED');
+//       }
+  
+//       console.log(args.query?.toLocaleLowerCase());
+  
+//       // Build the base query based on the 'fav' and 'ownerID' filters
+//       const baseQuery = args.fav
+//         ? ctx.db
+//             .query("files")
+//             .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()))
+//             .filter((q) => q.eq(q.field('isFavourite'), args.fav))
+//         : ctx.db
+//             .query("files")
+//             .withIndex('by_owner', q => q.eq('ownerID', args.ownerID.toString()));
+  
+//       // Apply pagination with the provided options
+//       const result = await baseQuery.paginate(args.paginationOpts);
+  
+//       // Get the list of files for the current page
+//       const files = result.page;
+  
+//       // Fetch URLs for each file asynchronously
+//       const filesWithUrl = await Promise.all(
+//         files.map(async (file) => ({
+//           ...file,
+//           url: await ctx.storage.getUrl(file.fileID),
+//         }))
+//       );
+  
+//       // Filter the files if the query is provided
+//       const filteredFiles = args.query
+//         ? filesWithUrl.filter((file) =>
+//             file.name.toLocaleLowerCase().includes(args.query!.toLocaleLowerCase())
+//           )
+//         : filesWithUrl;
+  
+//       // Return the correct structure for pagination
+//       return {
+//         data: filteredFiles, // The current set of files for this page
+//         isDone: result.isDone, // Whether there are more records
+//         continueCursor: result.continueCursor, // Cursor to fetch more records
+//         page: filteredFiles, // The current page of files
+//       };
+//     },
+//   });
+
 
 export const generateUploadUrl = mutation(async (ctx) => {
     return await ctx.storage.generateUploadUrl();
