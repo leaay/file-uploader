@@ -23,12 +23,12 @@ export default function RootLayout({
         <meta property="og:title" content="Uploaderv1" />
         <meta property="og:description" content="Upload, manage, and securely store your files in one place." />
         <meta property="og:url" content="https://uploaderv1.netlify.app" />
-        <meta property="og:image" content="/homepagepreview.png" />
+        <meta property="og:image" content="https://i.ibb.co/pQjmHbg/homepagepreview.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Uploaderv1" />
         <meta name="twitter:description" content="Upload, manage, and securely store your files in one place." />
-        <meta name="twitter:image" content="/homepagepreview.png" />
+        <meta name="twitter:image" content="https://i.ibb.co/pQjmHbg/homepagepreview.png" />
 
       </Head>
       <body className="min-h-screen flex flex-col ">
