@@ -22,7 +22,7 @@ export default function RootLayout({
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Uploaderv1" />
         <meta property="og:description" content="Upload, manage, and securely store your files in one place." />
-        <meta property="og:url" content="https://https://uploaderv1.netlify.app" />
+        <meta property="og:url" content="https://uploaderv1.netlify.app" />
         <meta property="og:image" content="/images/androind-chrome-192x192.png" />
 
         <meta name="twitter:card" content="images/androind-chrome-192x192.png" />
