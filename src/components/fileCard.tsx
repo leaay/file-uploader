@@ -3,7 +3,7 @@ import { Doc } from "../../convex/_generated/dataModel";
 import Image from "next/image";
 import FileCardActionMenu from "./fileCardActionMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { Expand, Maximize2 } from "lucide-react";
+import {  Maximize2 } from "lucide-react";
 import { Button } from "./ui/button";
 
 
