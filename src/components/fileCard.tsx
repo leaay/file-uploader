@@ -3,6 +3,8 @@ import { Doc } from "../../convex/_generated/dataModel";
 import Image from "next/image";
 import FileCardActionMenu from "./fileCardActionMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { Expand, Maximize2 } from "lucide-react";
+import { Button } from "./ui/button";
 
 
 interface ExtendedFile extends Doc<'files'> {
@@ -57,23 +59,24 @@ export function FileCard({file,selectedItems, setSelectedItems }:ExtendedProp) {
         onClick={selectedItems.length > 0 ? handleCardClick : undefined}
         onDoubleClick={selectedItems.length === 0 ? handleCardClick : undefined}
         style={{ zIndex: 0  }} 
-        className={`group relative z max-h-72 md:max-h-80  gap-2 outline-1 outline outline-gray-400 p-2 overflow-hidden shadow-lg shadow-gray-200  
+        className={`group relative outline-1 outline outline-gray-400 p-2 overflow-hidden shadow-lg shadow-gray-200  
             ${isFileSelected(file._id) ? "outline-purple-500 outline-4 shadow-purple-200 bg-purple-100"  : "outline-gray-400 shadow-gray-200"} 
             ${selectedItems.length > 0 && "cursor-pointer"} 
         `}>
-        <CardHeader className=" gap-1 h-full " >
+        <CardHeader className="  h-full " >
             <Tooltip>
-                <TooltipTrigger className="truncate">
-                    <CardTitle className="flex px-2  w-10/12 truncate overflow-hidden text-md">{file.name}</CardTitle></TooltipTrigger>
+                <TooltipTrigger >
+                    <CardTitle className="flex px-2 max-w-fit w-10/12 truncate overflow-hidden text-md">{file.name}</CardTitle>
+                </TooltipTrigger>
                 <TooltipContent side="bottom" className="z-50 max-w-40">{file.name}</TooltipContent>
             </Tooltip>
             <CardDescription className="px-2 text-xs" > uploaded: {added.toLocaleDateString()}</CardDescription>
-            <div className="w-full h-full  flex items-center justify-center"><Image className="rounded-lg h-full  px-2 aspect-[1/1.1]  z-[-29] " src={src} width={100} height={100} alt="file preview" /></div>
+            <div className=" h-full m-8  flex items-center justify-center"><Image className="rounded-lg h-full  px-2 aspect-[1/1.1]  z-[-29] " src={src} width={100} height={100} alt="file preview" /></div>
 
         </CardHeader>
         <div className="absolute top-2 right-2"><FileCardActionMenu file={file} /></div>
-        
+        <Button variant={"ghost"} className="h-[16px] w-[16px] p-0 m-0 absolute bottom-2 right-2"><Maximize2 /></Button>
     </Card>
-    
+
   )
 }

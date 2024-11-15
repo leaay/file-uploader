@@ -41,23 +41,23 @@ export const columns: ColumnDef<ExtendedFile>[] = [
       switch (FileType) {
         case "image/png":
           // simplifyiedType = "png"
-          helperIcon = <Image alt="type" src={'png.svg'} width={33} height={33} />
+          helperIcon = <Image alt="type" src={'/png.svg'} width={33} height={33} />
           break;
         case "image/jpeg":
           // simplifyiedType = "jpg"
-          helperIcon = <Image alt="type" src={'jpeg.svg'} width={33} height={33} />
+          helperIcon = <Image alt="type" src={'/jpeg.svg'} width={33} height={33} />
           break;
         case "image/svg+xml":
           // simplifyiedType = "svg";
-          helperIcon = <Image alt="type" src={'svg.svg'} width={33} height={33} />
+          helperIcon = <Image alt="type" src={'/svg.svg'} width={33} height={33} />
           break;
         case "application/pdf":
           // simplifyiedType = 'pdf';
-          helperIcon = <Image alt="type" src={'pdf.svg'}width={33} height={33} />
+          helperIcon = <Image alt="type" src={'/pdf.svg'}width={33} height={33} />
           break;
         case "image/gif":
           // simplifyiedType = "gif"
-          helperIcon = <Image alt="type" src={'gif.svg'}width={33} height={33} />
+          helperIcon = <Image alt="type" src={'/gif.svg'}width={33} height={33} />
           break
       }
 
@@ -82,7 +82,7 @@ export const columns: ColumnDef<ExtendedFile>[] = [
 
       const added = new Date(row.getValue("_creationTime"))
 
-      return <div>{added.toDateString()}</div>
+      return <div>{added.toLocaleDateString()}</div>
     },
   },
   {

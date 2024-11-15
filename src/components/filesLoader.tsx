@@ -60,7 +60,7 @@ export default  function FilesLoader({title,fav}:prop) {
 
   return (
     
-    <div className={` relative  flex-1 flex ${showFiles?.length === 0  ? 'justify-start' : ''} items-center flex-col`}>
+    <div className={` relative  flex-1 flex ${showFiles?.length === 0  ? 'justify-start' : ''} items-center flex-col min-h-[calc(100vh - ${headerHeight})]`}>
       <TooltipProvider >
         
         <SignedOut>
@@ -78,9 +78,9 @@ export default  function FilesLoader({title,fav}:prop) {
 
                 {selectedItems.length > 0 ? 
                   
-                  <div className=" bg-purple-100  rounded-3xl flex min-w-max items-center gap-2 px-4" > 
+                  <div className=" bg-purple-100 outline outline-1 outline-purple-200 rounded-3xl flex min-w-max items-center gap-2 px-4" > 
                     <Button onClick={()=>setSelectedItems([])} className="p-1 hover:bg-purple-100" variant={"ghost"}><X/></Button>
-                    <p className="flex gap-2 items-center min-w-fit"> {selectedItems.length} selected</p>
+                    <p className="flex gap-2 items-center min-w-fit font-bold"> {selectedItems.length} selected</p>
                     <Button  onClick={async()=>{
                       await deleteFileBatch({ files: selectedItems });
                       setSelectedItems([]);
@@ -134,7 +134,7 @@ export default  function FilesLoader({title,fav}:prop) {
           
         
 
-         {showFiles?.length === 0 && 
+         {showFiles?.length === 0 && dataView === 'grid' &&
 
           <div className="flex flex-col justify-center p-10 ">
             <Image src="/empty.svg" width={700}height={700}alt="Picture of the author"/>
