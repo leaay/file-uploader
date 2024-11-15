@@ -199,3 +199,33 @@ export const deleteFile = mutation({
     },
 
 });
+
+export const deleteFileBatch = mutation({
+    
+        args: {
+            files: v.array(
+                v.object({
+                    _id: v.id("files"),
+                    fileID: v.id("_storage"),
+                })
+            ),
+        },
+
+        async handler(ctx, args){
+
+        const isUserLoggedIn = await ctx.auth.getUserIdentity()
+
+        if(!isUserLoggedIn){
+            throw new ConvexError('Please login')
+        }
+
+        await Promise.all(
+            args.files.map(async (file) => {
+              await ctx.db.delete(file._id);
+              await ctx.storage.delete(file.fileID);
+            })
+          );
+
+    },
+
+});

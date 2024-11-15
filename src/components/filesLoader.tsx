@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { SignInButton,SignedIn,SignedOut, useOrganization, useUser } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import UploadModal  from "@/components/uploadModal"
 import { FileCard } from "@/components/fileCard";
@@ -10,16 +10,20 @@ import { useEffect, useState } from "react";
 import useH from "@/hooks/useH";
 import { DataTable } from "./file-table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Grid, Rows4 } from "lucide-react";
+import {  Grid, Rows4, Trash2, X } from "lucide-react";
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import { columns } from "./columns";
 import { Skeleton } from "@/components/ui/skeleton"
 import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select"
+import { toast } from "@/hooks/use-toast";
+import { Doc } from "../../convex/_generated/dataModel";
 
 interface prop{
     title: string;
     fav?: boolean;
 }
+
+type SelectedFile = Pick<Doc<"files">, "_id" | "fileID">;
 
 type DataViewType = 'grid' | 'table';
 
@@ -30,16 +34,16 @@ export default  function FilesLoader({title,fav}:prop) {
 
   const [query , setQuery] = useState<string | undefined>(undefined)
   const [typeQuery , setTypeQuery] = useState<string  | undefined>(undefined)
-
+  const [selectedItems, setSelectedItems] = useState<SelectedFile[]>([]);
   const [dataView, setDataView] = useState<DataViewType>('grid');
 
   const currentOwner = org.organization?.id ? org.organization.id : user?.id;
   const headerHeight = useH('header');
 
   const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip' , query:query , typeQuery:typeQuery , fav:fav ? true : false}) || undefined; 
-   
-  console.log(showFiles)
+  const deleteFileBatch = useMutation(api.files.deleteFileBatch)
 
+   
   useEffect(() => {
     const savedLayout  = localStorage.getItem('dataView') as DataViewType;
     if (savedLayout !== null) {
@@ -66,13 +70,26 @@ export default  function FilesLoader({title,fav}:prop) {
         
           <>
             <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6   bg-white z-[5]  w-full    sticky `}>
-              <div className="flex flex-row justify-between mx-auto  items-center container ">
-                <div className="flex  flex-col md:flex-row  gap-4 w-full justify-between items-center">
+              <div className="flex flex-row justify-between mx-auto items-start md:items-center container ">
+                <div className="flex  flex-col md:flex-row  gap-4 w-full justify-between  items-start md:items-center">
                   <h1 className="text-2xl ">{title}</h1>
                   <SearchBar  setQuery={setQuery} />
                 </div>
 
-                <div className="flex  flex-col md:flex-row  gap-4 justify-end">
+                {selectedItems.length > 0 ? 
+                  
+                  <div className=" bg-purple-100  rounded-3xl flex min-w-max items-center gap-2 px-4" > 
+                    <Button onClick={()=>setSelectedItems([])} className="p-1 hover:bg-purple-100" variant={"ghost"}><X/></Button>
+                    <p className="flex gap-2 items-center min-w-fit"> {selectedItems.length} selected</p>
+                    <Button  onClick={async()=>{
+                      await deleteFileBatch({ files: selectedItems });
+                      setSelectedItems([]);
+                      toast({variant:'white',title:'Files has been deleted succesfuly!'})
+                    }} 
+                    className="p-1 hover:bg-purple-100 hover:text-red-600" variant="ghost"><Trash2 /></Button> 
+                  </div> :
+
+                <div className="flex  flex-col items-end md:flex-row md:items-center  gap-4 justify-end">
                 <Select onValueChange={(value: string) => setTypeQuery(value === "ALL" ? undefined : value)}>
                           <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Filter by type" />
@@ -100,13 +117,14 @@ export default  function FilesLoader({title,fav}:prop) {
                   </Tabs>
                 <UploadModal currentOwner={currentOwner} />
                 </div>
+                }
               </div>
-              {/* <div className="h-4 w-full bg-red-50" > <p>selected : </p></div> */}
+              
             </div>
             
             {dataView === 'grid'  &&
-            <div className=" grid grid-cols-1 pt-4 sm:grid-cols-2 w-11/12 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7  px-8   ">
-                  {showFiles?.map((file) => <FileCard key={file._id} file={file} /> )}
+            <div className=" grid grid-cols-2 py-4  w-11/12 rounded-xl gap-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7  px-8   ">
+                  {showFiles?.map((file) => <FileCard selectedItems={selectedItems} setSelectedItems={setSelectedItems}  key={file._id} file={file} /> )}
             </div>
             }
 

@@ -1,9 +1,15 @@
-'use client'
 
 import "./globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { Toaster } from "@/components/ui/toaster"
 import Head from "next/head";
+
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'Uploaderv1',
+  description: 'Uploaderv1',
+}
 
 export default function RootLayout({
   children,
@@ -18,18 +24,6 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
-
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Uploaderv1" />
-        <meta property="og:description" content="Upload, manage, and securely store your files in one place." />
-        <meta property="og:url" content="https://uploaderv1.netlify.app" />
-        <meta property="og:image" content="https://i.ibb.co/pQjmHbg/homepagepreview.png" />
-
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Uploaderv1" />
-        <meta name="twitter:description" content="Upload, manage, and securely store your files in one place." />
-        <meta name="twitter:image" content="https://i.ibb.co/pQjmHbg/homepagepreview.png" />
-
       </Head>
       <body className="min-h-screen flex flex-col ">
         <ConvexClientProvider>

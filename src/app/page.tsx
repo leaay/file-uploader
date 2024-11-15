@@ -5,14 +5,18 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { UserButton, useUser ,SignInButton} from "@clerk/nextjs";
 import Footer from "@/components/footer";
+import Head from "next/head";
 export default  function Home() {
 
   const {user} = useUser()
 
 
   return (
-
-    
+    <>
+    <Head>
+        <title>Uploaderv1</title>
+        <meta name="description" content="This is a description for my page." />
+    </Head>
     <div className="bg-white ">
       
       {/* 1  */}
@@ -97,7 +101,7 @@ export default  function Home() {
                 <div className="absolute inset-x-10 bottom-0 top-10 overflow-hidden rounded-t-[12cqw] border-x-[3cqw] border-t-[3cqw] border-gray-700 bg-gray-900 shadow-2xl">
                   <img
                     className="size-full object-cover object-top"
-                    src="https://tailwindui.com/plus/img/component-images/bento-03-mobile-friendly.png"
+                    src="/phoneprev.png"
                     alt=""
                   />
                 </div>
@@ -238,5 +242,6 @@ headers: {
       <Footer />
       
     </div>
+    </>
   );
 }

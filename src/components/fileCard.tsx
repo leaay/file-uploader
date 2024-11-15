@@ -3,52 +3,64 @@ import { Doc } from "../../convex/_generated/dataModel";
 import Image from "next/image";
 import FileCardActionMenu from "./fileCardActionMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { useEffect, useState } from "react";
 
 
 interface ExtendedFile extends Doc<'files'> {
     url: string | null;
 }
 
+type SelectedFile = Pick<Doc<"files">, "_id" | "fileID">;
+
 interface ExtendedProp {
     file: ExtendedFile
+    selectedItems: SelectedFile[];
+    setSelectedItems: React.Dispatch<React.SetStateAction<SelectedFile[]>>;
 }
 
-// type FileType = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
+export function FileCard({file,selectedItems, setSelectedItems }:ExtendedProp) {
 
 
-export function FileCard({file}:ExtendedProp) {
+        const added = new Date(file._creationTime)
 
-    const added = new Date(file._creationTime)
-    const [src, setSrc] = useState("");
-
-
-        useEffect(() => {
-            switch (file.fileType) {
-            case "image/jpeg":
-                setSrc("/jpeg.svg");
-                break;
-            case "image/png":
-                setSrc("/png.svg");
-                break;
-            case "image/gif":
-                setSrc("/gif.svg");
-                break;
-            case "image/svg+xml":
-                setSrc("/svg.svg");
-                break;
-            case "application/pdf":
-                setSrc("/pdf.svg");
-                break;
-            default:
-                setSrc("/default.svg"); 
+        const getIconSrc = (fileType: string) => {
+            switch (fileType) {
+              case "image/jpeg":
+                return "/jpeg.svg";
+              case "image/png":
+                return "/png.svg";
+              case "image/gif":
+                return "/gif.svg";
+              case "image/svg+xml":
+                return "/svg.svg";
+              case "application/pdf":
+                return "/pdf.svg";
+              default:
+                return "/default.svg";
             }
-        }, []);
+          };
 
+        const src = getIconSrc(file.fileType);
+
+        const isFileSelected = (id: string) => selectedItems.some((item) => item._id === id);
+
+        const handleCardClick = () => {
+            setSelectedItems((prev) =>
+              prev.some((item) => item._id === file._id)
+                ? prev.filter((item) => item._id !== file._id)
+                : [...prev, { _id: file._id, fileID: file.fileID }] 
+            );
+        };
 
   return (
 
-    <Card  style={{ zIndex: 0  }} className="group relative z max-h-72 md:max-h-80  gap-2 outline-1 outline outline-gray-400 p-2 overflow-hidden shadow-lg shadow-gray-200 ">
+    <Card 
+        onClick={selectedItems.length > 0 ? handleCardClick : undefined}
+        onDoubleClick={selectedItems.length === 0 ? handleCardClick : undefined}
+        style={{ zIndex: 0  }} 
+        className={`group relative z max-h-72 md:max-h-80  gap-2 outline-1 outline outline-gray-400 p-2 overflow-hidden shadow-lg shadow-gray-200  
+            ${isFileSelected(file._id) ? "outline-purple-500 outline-4 shadow-purple-200 bg-purple-100"  : "outline-gray-400 shadow-gray-200"} 
+            ${selectedItems.length > 0 && "cursor-pointer"} 
+        `}>
         <CardHeader className=" gap-1 h-full " >
             <Tooltip>
                 <TooltipTrigger className="truncate">
