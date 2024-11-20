@@ -41,7 +41,7 @@ export default  function FilesLoader({title,fav}:prop) {
   const headerHeight = useH('header');
 
   const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip' , query:query , typeQuery:typeQuery , fav:fav ? true : false}) || undefined; 
-  const deleteFileBatch = useMutation(api.files.deleteFileBatch)
+  // const deleteFileBatch = useMutation(api.files.deleteFileBatch)
 
    
   useEffect(() => {
