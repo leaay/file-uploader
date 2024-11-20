@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { SignInButton,SignedIn,SignedOut, useOrganization, useUser } from "@clerk/nextjs";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import UploadModal  from "@/components/uploadModal"
 import { FileCard } from "@/components/fileCard";
