@@ -6,6 +6,7 @@ import FileCardActionMenu from "./fileCardActionMenu";
 import { Doc } from "../../convex/_generated/dataModel";
 import Image from "next/image";
 import { Star } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox"
 
  
 type FileTypes = "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml" | "application/pdf";
@@ -89,7 +90,7 @@ export const columns: ColumnDef<ExtendedFile>[] = [
     id: "actions",
     cell: ({ row }) => {
       
-      console.log(row.original as ExtendedFile)
+      
  
       return (
         <FileCardActionMenu file={row.original} />

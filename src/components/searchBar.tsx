@@ -36,7 +36,7 @@ const SearchBar: React.FC<prop> = ({setQuery}) => {
 
   return (
     <Form {...form} >
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="relative w-auto">
         <FormField
           control={form.control}
           name="query"
@@ -49,7 +49,7 @@ const SearchBar: React.FC<prop> = ({setQuery}) => {
             </FormItem>
           )}
         />
-        <Button className="transform -translate-x-full" size={"icon"} variant={"ghost"} type="submit"><Search width={'20px'} height={'20px'} /></Button>
+        <Button className="absolute top-0 right-0" size={"icon"} variant={"ghost"} type="submit"><Search width={'20px'} height={'20px'} /></Button>
       </form>
     </Form>
   );

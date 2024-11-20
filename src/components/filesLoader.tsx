@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select"
 import { toast } from "@/hooks/use-toast";
 import { Doc } from "../../convex/_generated/dataModel";
+import FileLoaderAction from "./fileLoaderAction";
 
 interface prop{
     title: string;
@@ -70,27 +71,17 @@ export default  function FilesLoader({title,fav}:prop) {
         
           <>
             <div style={{ top: `calc(${headerHeight}px )` }} className={`p-6   bg-white z-[5]  w-full    sticky `}>
-              <div className="flex flex-row justify-between mx-auto items-start md:items-center container ">
-                <div className="flex  flex-col md:flex-row  gap-4 w-full justify-between  items-start md:items-center">
+              <div className="flex flex-col md:flex-row gap-2 justify-between mx-auto items-start md:items-center container ">
+                <div className="flex  order-1 flex-row  gap-4 w-full justify-between  items-start md:items-center">
                   <h1 className="text-2xl ">{title}</h1>
                   <SearchBar  setQuery={setQuery} />
                 </div>
 
-                {selectedItems.length > 0 ? 
-                  
-                  <div className=" bg-purple-100 outline outline-1 outline-purple-200 rounded-3xl flex min-w-max items-center gap-2 px-4" > 
-                    <Button onClick={()=>setSelectedItems([])} className="p-1 hover:bg-purple-100" variant={"ghost"}><X/></Button>
-                    <p className="flex gap-2 items-center min-w-fit font-bold"> {selectedItems.length} selected</p>
-                    <Button  onClick={async()=>{
-                      await deleteFileBatch({ files: selectedItems });
-                      setSelectedItems([]);
-                      toast({variant:'white',title:'Files has been deleted succesfuly!'})
-                    }} 
-                    className="p-1 hover:bg-purple-100 hover:text-red-600" variant="ghost"><Trash2 /></Button> 
-                  </div> :
-
-                <div className="flex  flex-col items-end md:flex-row md:items-center  gap-4 justify-end">
-                <Select onValueChange={(value: string) => setTypeQuery(value === "ALL" ? undefined : value)}>
+                  {selectedItems.length > 0 && <FileLoaderAction selectedItems={selectedItems} setSelectedItems={setSelectedItems} /> }
+              
+                  <div className="flex order order-2 justify-between flex-row flex-wrap items-end md:items-center md:flex-row md:flex-nowrap  gap-4 md:justify-end">
+                    {selectedItems.length > 0 ? null :
+                     <Select onValueChange={(value: string) => setTypeQuery(value === "ALL" ? undefined : value)}>
                           <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Filter by type" />
                           </SelectTrigger>
@@ -102,22 +93,22 @@ export default  function FilesLoader({title,fav}:prop) {
                             <SelectItem value="image/svg+xml">SVG</SelectItem>
                           <SelectItem value="application/pdf">PDF</SelectItem>
                       </SelectContent>
-                    </Select>
-                <Tabs value={dataView} defaultValue={dataView} >
-                        <TabsList >
-                            <Tooltip>
-                              <TooltipTrigger><TabsTrigger onClick={()=>toggleView("grid")} value="grid"><Grid className="w-8" /></TabsTrigger></TooltipTrigger>
-                              <TooltipContent className="z-50">Grid view</TooltipContent>
-                            </Tooltip>
-                            <Tooltip>
-                              <TooltipTrigger><TabsTrigger onClick={()=>toggleView("table")} value="table"><Rows4 className="w-8"  /></TabsTrigger></TooltipTrigger>
-                              <TooltipContent className="z-50">Table view</TooltipContent>
-                            </Tooltip>
-                        </TabsList>
-                  </Tabs>
-                <UploadModal currentOwner={currentOwner} />
-                </div>
-                }
+                     </Select>}
+                     <Tabs value={dataView} defaultValue={dataView} >
+                          <TabsList >
+                              <Tooltip>
+                                <TooltipTrigger><TabsTrigger onClick={()=>toggleView("grid")} value="grid"><Grid className="w-8" /></TabsTrigger></TooltipTrigger>
+                                <TooltipContent className="z-50">Grid view</TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger><TabsTrigger onClick={()=>toggleView("table")} value="table"><Rows4 className="w-8"  /></TabsTrigger></TooltipTrigger>
+                                <TooltipContent className="z-50">Table view</TooltipContent>
+                              </Tooltip>
+                          </TabsList>
+                     </Tabs>
+                     <UploadModal currentOwner={currentOwner} />
+                  </div>
+                
               </div>
               
             </div>
@@ -179,3 +170,15 @@ export default  function FilesLoader({title,fav}:prop) {
     </div>
   );
 }
+
+
+{/* <div className=" bg-purple-100 outline outline-1 outline-purple-200 rounded-3xl flex min-w-max items-center gap-2 px-4" > 
+<Button onClick={()=>setSelectedItems([])} className="p-1 hover:bg-purple-100" variant={"ghost"}><X/></Button>
+<p className="flex gap-2 items-center min-w-fit font-bold"> {selectedItems.length} selected</p>
+<Button  onClick={async()=>{
+  await deleteFileBatch({ files: selectedItems });
+  setSelectedItems([]);
+  toast({variant:'white',title:'Files has been deleted succesfuly!'})
+}} 
+className="p-1 hover:bg-purple-100 hover:text-red-600" variant="ghost"><Trash2 /></Button> 
+</div> */}

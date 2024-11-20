@@ -13,7 +13,7 @@ interface ExtendedFile extends Doc<'files'> {
 
 type SelectedFile = Pick<Doc<"files">, "_id" | "fileID">;
 
-interface ExtendedProp {
+export interface ExtendedProp {
     file: ExtendedFile
     selectedItems: SelectedFile[];
     setSelectedItems: React.Dispatch<React.SetStateAction<SelectedFile[]>>;
