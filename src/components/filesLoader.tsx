@@ -10,12 +10,11 @@ import { useEffect, useState } from "react";
 import useH from "@/hooks/useH";
 import { DataTable } from "./file-table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {  Grid, Rows4, Trash2, X } from "lucide-react";
+import {  Grid, Rows4} from "lucide-react";
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import { columns } from "./columns";
 import { Skeleton } from "@/components/ui/skeleton"
 import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select"
-import { toast } from "@/hooks/use-toast";
 import { Doc } from "../../convex/_generated/dataModel";
 import FileLoaderAction from "./fileLoaderAction";
 
