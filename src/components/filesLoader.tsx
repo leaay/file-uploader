@@ -24,7 +24,6 @@ interface prop{
 }
 
 type SelectedFile = Pick<Doc<"files">, "_id" | "fileID">;
-
 type DataViewType = 'grid' | 'table';
 
 export default  function FilesLoader({title,fav}:prop) {
@@ -41,9 +40,7 @@ export default  function FilesLoader({title,fav}:prop) {
   const headerHeight = useH('header');
 
   const showFiles = useQuery(api.files.getFile, {ownerID: currentOwner || 'skip' , query:query , typeQuery:typeQuery , fav:fav ? true : false}) || undefined; 
-  // const deleteFileBatch = useMutation(api.files.deleteFileBatch)
 
-   
   useEffect(() => {
     const savedLayout  = localStorage.getItem('dataView') as DataViewType;
     if (savedLayout !== null) {
@@ -118,7 +115,7 @@ export default  function FilesLoader({title,fav}:prop) {
             </div>
             }
 
-            {dataView === 'table'&& showFiles && <DataTable data={showFiles} columns={columns} />}
+            {dataView === 'table'&& showFiles && <DataTable data={showFiles} columns={columns} selectedItems={selectedItems} setSelectedItems={setSelectedItems} />}
             
           </>
           
