@@ -5,6 +5,8 @@ import FileCardActionMenu from "./fileCardActionMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import {  Maximize2 } from "lucide-react";
 import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { useState } from "react";
 
 
 interface ExtendedFile extends Doc<'files'> {
@@ -21,6 +23,7 @@ export interface ExtendedProp {
 
 export function FileCard({file,selectedItems, setSelectedItems }:ExtendedProp) {
 
+        const [isDialogOpen,setIsDialogOpen] = useState<boolean>(false)
 
         const added = new Date(file._creationTime)
 
@@ -54,7 +57,17 @@ export function FileCard({file,selectedItems, setSelectedItems }:ExtendedProp) {
         };
 
   return (
-
+    <>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent style={{ gridTemplateColumns: "1fr 200px" }} className="top-[50%] w-11/12 h-[90%] max-h-[90%] max-w-full  flex flex-col md:grid  gap-4   ">
+            <div className="w-full h-[60%]  flex justify-center "><Image  src={`${file.url}`} alt={file.name} 	width={888} height={888} /></div>
+            <DialogHeader className="md:max-w-52 text-start flex justify-between ">
+              <p className=" text-xs">uploaded: {added.toLocaleDateString()}</p>
+              <DialogTitle>{file.name}</DialogTitle>
+            </DialogHeader>
+          </DialogContent>
+    </Dialog>
+    
     <Card 
         onClick={selectedItems.length > 0 ? handleCardClick : undefined}
         onDoubleClick={selectedItems.length === 0 ? handleCardClick : undefined}
@@ -64,19 +77,22 @@ export function FileCard({file,selectedItems, setSelectedItems }:ExtendedProp) {
             ${selectedItems.length > 0 && "cursor-pointer"} 
         `}>
         <CardHeader className="  h-full " >
+
             <Tooltip>
                 <TooltipTrigger >
                     <CardTitle className="flex px-2 max-w-fit w-10/12 truncate overflow-hidden text-md">{file.name}</CardTitle>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="z-50 max-w-40">{file.name}</TooltipContent>
             </Tooltip>
+
             <CardDescription className="px-2 text-xs" > uploaded: {added.toLocaleDateString()}</CardDescription>
+            
             <div className=" h-full m-8  flex items-center justify-center"><Image className="rounded-lg h-full  px-2 aspect-[1/1.1]  z-[-29] " src={src} width={100} height={100} alt="file preview" /></div>
 
         </CardHeader>
         <div className="absolute top-2 right-2"><FileCardActionMenu file={file} /></div>
-        <Button variant={"ghost"} className="h-[16px] w-[16px] p-0 m-0 absolute bottom-2 right-2"><Maximize2 /></Button>
+        <Button onClick={()=>setIsDialogOpen(true)} variant={"ghost"} className="h-[16px] w-[16px] p-0 m-0 absolute bottom-2 right-2"><Maximize2 /></Button>
     </Card>
-
+    </>
   )
 }
